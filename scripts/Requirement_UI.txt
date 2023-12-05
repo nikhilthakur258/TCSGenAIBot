@@ -1,0 +1,2 @@
+Write code in Java selenium to test below scenario: 
+Open facebook and login on chrome
