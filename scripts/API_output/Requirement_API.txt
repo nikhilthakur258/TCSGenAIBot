@@ -1,4 +1,3 @@
-Write code in Java selenium to test below scenario: 
 Feature: Test CRUD methods in Sample Employee REST API testing
 
 Scenario: Add Employee record

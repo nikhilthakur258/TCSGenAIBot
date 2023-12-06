@@ -1,0 +1,37 @@
+import groovy.json.JsonSlurper
+
+// Function to send HTTP request and validate response code
+def sendRequestAndValidate(String endpoint, String method, Map headers = [:], String requestBody = null) {
+    testRunner.testCase.setPropertyValue("Endpoint", endpoint)
+    testRunner.testCase.testSteps["REST Request"].config.requestMethod = method
+    testRunner.testCase.testSteps["REST Request"].config.requestHeaders = headers
+    if (requestBody != null) {
+        testRunner.testCase.testSteps["REST Request"].config.requestContent = requestBody
+    }
+    
+    testRunner.runTestStepByName("REST Request")
+    
+    def responseCode = testRunner.testCase.testSteps["REST Request"].testRequest.response.responseCode
+    assert responseCode == 200, "Invalid response code: $responseCode"
+}
+
+// Scenario: Add Employee record (POST)
+def addEmployeeEndpoint = "http://your-api-base-url/employee"
+def addEmployeeRequestBody = '{"name": "John Doe", "age": 30, "designation": "Software Engineer"}'
+def addEmployeeHeaders = ["Content-Type": "application/json"]
+sendRequestAndValidate(addEmployeeEndpoint, "POST", addEmployeeHeaders, addEmployeeRequestBody)
+
+// Scenario: Update Employee record (PUT)
+def updateEmployeeEndpoint = "http://your-api-base-url/employee/123" // Assuming '123' is the employee ID to update
+def updateEmployeeRequestBody = '{"age": 31, "designation": "Senior Software Engineer"}'
+def updateEmployeeHeaders = ["Content-Type": "application/json"]
+sendRequestAndValidate(updateEmployeeEndpoint, "PUT", updateEmployeeHeaders, updateEmployeeRequestBody)
+
+// Scenario: Get Employee record (GET)
+def getEmployeeEndpoint = "http://your-api-base-url/employee/123" // Assuming '123' is the employee ID to retrieve
+def getEmployeeHeaders = ["Content-Type": "application/json"]
+sendRequestAndValidate(getEmployeeEndpoint, "GET", getEmployeeHeaders)
+
+// Scenario: DELETE Employee record (DELETE)
+def deleteEmployeeEndpoint = "http://your-api-base-url/employee/123" // Assuming '123' is the employee ID to delete
+sendRequestAndValidate(deleteEmployeeEndpoint, "DELETE")

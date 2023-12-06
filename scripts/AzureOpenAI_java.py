@@ -15,7 +15,7 @@ def generate_test_cases(description_to_append):
     #prompt = description_to_append
     #response = openai.Completion.create(engine=deployment_name, prompt=prompt, temperature=0.0, max_tokens=2000,
                                         #top_p=0.95, frequency_penalty=0, presence_penalty=0, stop=None)
-    with open('scripts/Java_Testcase.java') as f:
+    with open('scripts/output/Java_Testcase.java') as f:
         content = f.read()                           
         print(content)
 

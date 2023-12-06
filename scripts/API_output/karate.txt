@@ -1,0 +1,28 @@
+Feature: Test CRUD methods in Sample Employee REST API testing
+
+  Background:
+    * url 'https://your-api-base-url.com'
+
+  Scenario: Add Employee record
+    Given path 'employee'
+    And request { name: 'John Doe', age: 30, department: 'HR' }
+    When method POST
+    Then status 200
+
+  Scenario: Update Employee record
+    Given path 'employee'
+    And request { id: 123, name: 'Updated Name', age: 35, department: 'IT' }
+    When method PUT
+    Then status 200
+
+  Scenario: Get Employee record
+    Given path 'employee'
+    And request {}
+    When method GET
+    Then status 200
+
+  Scenario: DELETE Employee record
+    Given path 'employee'
+    And request { id: 123 }
+    When method DELETE
+    Then status 200
