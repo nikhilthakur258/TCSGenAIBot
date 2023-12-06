@@ -1,0 +1,50 @@
+Code Architecture Document: SQLAPP
+Overview
+The SQLAPP program is a COBOL application designed to interact with a relational database using SQL statements. It performs various operations such as querying, updating, inserting, and deleting records in the database.
+
+Structure
+Data Division
+Working-Storage Section:
+Defines variables (SQLCODE, SQLCODE-C1, NAME, RATING, SALARY, CITY, BONUS, PROJ-TITLE, PNUM, DEPT-NO, MGR-ID, ZIPCODE, MIN-SALARY, EMSG, SP, TOT-SAL) for storing data and managing SQL codes and messages.
+Procedure Division
+P0 Section
+Open Cursor C1:
+
+Retrieves the salary of an employee named "Jones" and updates it to the minimum salary if below the specified minimum.
+Open Cursor C2:
+
+Retrieves the rating doubled for employees with a rating of 2.
+Singleton Select:
+
+Retrieves the city and bonus for an employee with a salary of $44,000 using a single-row SELECT statement.
+Singleton Select with Indicator Variables:
+
+Repeats the previous query using indicator variables for handling null values.
+Searched DELETE and INSERT:
+
+Deletes a project named "Quality Assessment" and inserts a different project with the same name. Rolls back the transaction if the insertion fails.
+INSERT FROM SELECT:
+
+Inserts a row into the ASSIGNMENT table using values selected from the EMPLOYEE table based on a specified name.
+Searched UPDATE:
+
+Updates the city and postal code for an employee named "Jones." Commits the changes upon successful completion.
+GET-C1 Section:
+
+Fetches rows from Cursor C1, updates the salary to the minimum if necessary, and rolls back if the total salary exceeds a certain limit.
+GET-C2 Section:
+
+Fetches rows from Cursor C2 and displays the doubled rating.
+Usage Guidelines
+The program assumes the existence of certain procedures (OPEN_C1, FETCH_C1, CLOSE_C1, OPEN_C2, FETCH_C2, CLOSE_C2, SELECT_INTO, SELECT_INTO_INDIC, DELETE_FROM, INSERT_INTO, INSERT_FROM_SELECT, UPDATE_SEARCHED, SET_SAVEPOINT, UPDATE_POSITIONED, FIND_TOTAL_SALARY, CANCEL_TO_SAVEPT, RETURN_ERROR_MESSAGE, ABORT, ENDTRAN) in the OBJECT/MODLIB/COBOLAPP module.
+
+Ensure proper database connectivity and existence of necessary tables for successful execution.
+
+Dependencies
+The program relies on external procedures in the OBJECT/MODLIB/COBOLAPP module for database interactions.
+Maintenance
+Regularly review and update the SQL statements and procedures as needed to align with changes in the database schema or business requirements.
+Version Information
+The code structure follows COBOL conventions and is consistent with COBOL 85 standards.
+Conclusion
+The SQLAPP program is a COBOL application designed for database operations, demonstrating various SQL statements for querying, updating, inserting, and deleting records. It is essential to ensure proper database connectivity, maintain the integrity of procedures in the COBOLAPP module, and follow best practices for code maintenance and updates.

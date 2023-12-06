@@ -19,6 +19,11 @@ def Generate_TestCases():
 @app.route('/Generate_APITestCases')
 def Generate_APITestCases():
     return render_template('Generate_APITestCases.html')   
+
+@app.route('/Code_Documentation')
+def Code_Documentation():
+    return render_template('Code_Documentation.html')      
+    
     
 
 @app.route('/run_script', methods=['POST'])
