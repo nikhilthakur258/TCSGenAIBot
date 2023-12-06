@@ -1,12 +1,30 @@
 Write code in Java selenium to test below scenario: 
-
-
-An icon shall be selected during detailed design to show a gate in a closed position.
-An icon shall be selected during detailed design to show a gate in an open position.
-An icon shall be selected during detailed design to show a gate in a partially open (15%) open position.
-The gate icon shall be configurable to show the name of the gate with the icon.
-The gate icon shall be configurable to show the state of the gate (e.g., open or close).
-The gate icon shall be configurable to show the status of the gate (operational, failed, or no data).  The color of the gate icon shall be changed to show the status of the gate.
-When the operator moves the mouse over a gate icon a text window shall be displayed showing a summary of the gate status.  The details of the summary status display will be defined in the GUI design document.
-The operator shall be able to activate a detailed device status window for the selected gate by double left clicking on the icon.  This action shall cause a circle to be displayed over the gate icon for as long as the detailed device status window is displayed for that gate.
-The operator shall be able to activate a device control window for the selected gate by right clicking on the icon.  The right click on the icons shall display a pop-up menu of available device actions from which the user may select.  This action shall cause a circle to be displayed over the gate icon for as long as the device control window is displayed for that gate.
+Scenario: Signed-in users get larger capacity
+  
+Given a user opens https://www.example.com using Chrome
+And the user clicks on "Upload Files"
+And the page reloads
+And the user clicks on "Spreadsheet Formats"
+Then the buttons "XLS" and "XLSX" show
+And the user clicks on "XLSX"
+And the user selects "500kb-sheet.xlsx"
+Then the upload completes
+And the table "Uploaded Files" contains a cell with "500kb-sheet.xlsx" 
+And the user clicks on "XLSX"
+And the user selects "1mb-sheet.xlsx"
+Then the upload fails
+And the table "Uploaded Files" does not contain a cell with "1mb-sheet.xlsx" 
+And the user clicks on "Login"
+And the user enters "testuser123" into the "username" field
+And the user enters "$Pass123" into the "password" field
+And the user clicks on "Sign in"
+And the page reloads
+Then the table "Uploaded Files" contains a cell with "500kb-sheet.xlsx" 
+And the table "Uploaded Files" does not contain a cell with "1mb-sheet.xlsx" 
+And the user clicks on "spreadsheet formats"
+Then the buttons "XLS" and "XLSX" show
+And the user clicks on "XLSX"
+And the user selects "1mb-sheet.xlsx"
+Then the upload completes
+And the table "Uploaded Files" contains a cell with "1mb-sheet.xlsx" 
+And the table "Uploaded Files" contains a cell with "500kb-sheet.xlsx"

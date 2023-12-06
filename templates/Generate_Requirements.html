@@ -61,8 +61,8 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ url_for('Test') }}">Fine tune requirements</a>
-						<a class="collapse-item" href="{{ url_for('Test') }}">Convert into BDD/Gherkins</a>
+                        <a class="collapse-item" href="{{ url_for('Generate_Requirements') }}">Fine tune requirements</a>
+						<a class="collapse-item" href="{{ url_for('Generate_Requirements') }}">Convert into BDD/Gherkins</a>
                     </div>
                 </div>
             </li>
@@ -428,37 +428,61 @@
       margin-top: 10px;
     }
   }
+  #languageDropdown {
+            width: 50%;
+        }
+		 #dropdownLabel {
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
+            font-weight: bold;
+        }
 </style>
 
 </head>
 <body>
-<h1 align=center>Fine tune requirements</h1>
-<div class="container mt-5">
-  <!-- Buttons -->
-  <div class="row">
-    <div class="col-md-12 text-center">
-      <button id="clearBtn" class="btn btn-warning">Clear Input</button>
-      <button id="downloadBtn" class="btn btn-success" disabled>Download</button>
-    </div>
-  </div>
+<h1 align=center style="font-size: 24px;">Fine-tune requirements</h1>
 
-  <!-- Text Areas -->
-  <div class="row">
-    <div class="col-md-6">
-      <textarea id="inputTextArea" class="form-control" placeholder="Enter input..."></textarea>
-    </div>
-    <div class="col-md-6">
-      <textarea id="outputTextArea" class="form-control" placeholder="Output will be displayed here..." disabled></textarea>
-    </div>
-  </div>
+    <div class="container mt-5">
 
-  <!-- Generate Button -->
-  <div class="row mt-3">
-    <div class="col-md-12 text-center">
-      <button id="generateBtn" class="btn btn-primary" onclick="runPythonScript()">Generate</button>
+        <!-- Buttons -->
+        <div class="row">
+            <div class="col-md-12">
+			 <label for="languageDropdown" id="dropdownLabel"  class="mt-2">Select Framework/Programming Language</label>
+			      <select id="languageDropdown" class="form-control ml-2">
+                    <option value="robot_framework">Robot Framework</option>
+                    <option value="java_selenium">Java Selenium</option>
+                    <option value="python_selenium">Python Selenium</option>
+                </select>
+				
+				    <div class="spinner-border text-primary" role="status" id="loadingSpinner" style="display: none;">
+        <span class="sr-only">Loading...</span>
     </div>
-  </div>
-</div>
+                <button id="clearBtn" class="btn btn-warning">Clear Input</button>
+
+                <button id="downloadBtn" class="btn btn-success ml-2" disabled>Download</button>
+            </div>
+        </div>
+
+        <!-- Text Areas -->
+        <div class="row">
+            <div class="col-md-6">
+                <textarea id="inputTextArea" class="form-control" placeholder="Enter input..."></textarea>
+            </div>
+            <div class="col-md-6">
+                <textarea id="outputTextArea" class="form-control" placeholder="Output will be displayed here..."
+                    disabled></textarea>
+            </div>
+        </div>
+
+        <!-- Generate Button -->
+        <div class="row mt-3">
+            <div class="col-md-12 text-center">
+                <button id="generateBtn" class="btn btn-primary" onclick="runPythonScript()">Generate</button>
+            </div>
+        </div>
+
+    </div>
 
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -466,6 +490,8 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
 function runPythonScript() {
+	document.getElementById('loadingSpinner').style.display = 'inline-block';
+
     var pythonScriptPath = "AzureOpenAI.py";
     var inputText = document.getElementById('inputTextArea').value;
 
@@ -482,28 +508,22 @@ function runPythonScript() {
         document.getElementById('outputTextArea').value = data.output;
         document.getElementById('downloadBtn').disabled = false;
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => console.error('Error:', error))
+	.finally(() => {
+                // Hide loading spinner after response
+                document.getElementById('loadingSpinner').style.display = 'none';
+});
+
 }
 
 </script>
 <script>
-  // Clear Input Button
-  document.getElementById('clearBtn').addEventListener('click', function() {
-    document.getElementById('inputTextArea').value = '';
-  });
-
-// Generate Button
-document.getElementById('generateBtn').addEventListener('click', function() {
-  var inputText = document.getElementById('inputTextArea').value;
-
-  // Check if inputText is empty before making the fetch request
-  if (!inputText.trim()) {
-    alert('Please enter input text before generating.');
-    return;
-  }
-
-  // Disable the generate button during the fetch request
-  document.getElementById('generateBtn').disabled = true;
+document.getElementById('clearBtn').addEventListener('click', function () {
+        document.getElementById('inputTextArea').value = '';
+        // Clear Output TextArea as well
+        document.getElementById('outputTextArea').value = '';
+        // Disable the Download button after clearing
+        document.getElementById('downloadBtn').disabled = true;
 
   /*fetch('/run_python_script', {
     method: 'POST',

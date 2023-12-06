@@ -12,11 +12,12 @@ output_file = "Requirement_UI.txt"
 
 # Function to generate test cases using OpenAI GPT-3
 def generate_test_cases(description_to_append):
-    prompt = description_to_append
+    #prompt = description_to_append
     #response = openai.Completion.create(engine=deployment_name, prompt=prompt, temperature=0.0, max_tokens=2000,
                                         #top_p=0.95, frequency_penalty=0, presence_penalty=0, stop=None)
-    for testcase in response["choices"]:
-        print(f"{testcase['text']}")
+    with open('scripts/Java_Testcase.java') as f:
+        content = f.read()                           
+        print(content)
 
 
 if __name__ == "__main__":

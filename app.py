@@ -9,8 +9,12 @@ def index():
     return render_template('index.html')
 
 @app.route('/Generate_Requirements')
-def Test():
+def Generate_Requirements():
     return render_template('Generate_Requirements.html')
+    
+@app.route('/Generate_TestCases')
+def Generate_TestCases():
+    return render_template('Generate_TestCases.html')
 
 @app.route('/run_script', methods=['POST'])
 def run_script():
