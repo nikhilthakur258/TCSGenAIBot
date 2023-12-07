@@ -1,0 +1,10 @@
+Feature: Testing Bookstore API
+
+Background:
+  * url 'http://your-api-base-url'
+
+Scenario: Add a new book
+  Given path '/books'
+  And request testData
+  When method post
+  Then status 201

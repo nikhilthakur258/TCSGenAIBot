@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -45,8 +44,7 @@
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
-
-            <!-- Divider -->
+           <!-- Divider -->
             <hr class="sidebar-divider">
 
             <!-- Heading -->
@@ -79,7 +77,6 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="Generate.html">Generate unit test cases</a>
-						<a class="collapse-item" href="Generate.html">Find Security vulnerabilities</a>
                         <a class="collapse-item" href="Generate.html">Convert Code</a>
                         <a class="collapse-item" href="Generate.html">Optimize code</a>
                         <a class="collapse-item" href="Generate.html">Code Reverse Engineering</a>
@@ -99,12 +96,10 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{ url_for('Generate_TestCases')}}">Generate test cases for UI</a>
-						<a class="collapse-item" href="{{ url_for('Generate_APITestCases')}}">Generate test cases for API</a>
-						<a class="collapse-item" href="{{ url_for('Generate_TestCasesMetlifePOC')}}">Generate API tests with data</a>
+						<a class="collapse-item" href="{{ url_for('Generate_TestCases')}}">Generate test cases for API</a>
                         <a class="collapse-item" href="Generate.html">Convert Code</a>
                         <a class="collapse-item" href="Generate.html">Optimize test cases</a>
                         <a class="collapse-item" href="Generate.html">Code Reverse Engineering</a>
-						<a class="collapse-item" href="Generate.html">Generate Test Data</a>
                     </div>
                 </div>
             </li>
@@ -120,9 +115,8 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="Generate.html">Find root cause</a>
-						<a class="collapse-item" href="Generate.html">Code Converter</a>
-                        <a class="collapse-item" href="Generate.html">Code Optimization</a>
-                        <a class="collapse-item" href="{{ url_for('Code_Documentation')}}">NexGen Code Documentation</a>
+                        <a class="collapse-item" href="Generate.html">Fine tune code</a>
+                        <a class="collapse-item" href="Generate.html">Generate Code document</a>
                     </div>
                 </div>
             </li>
@@ -386,21 +380,301 @@
      
 
                         <!-- Content Column -->
-                        <div class="col-lg-6 mb-4">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GenAI Bot Generate Code</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+ <style>
+  /* Set a fixed height for both text areas */
+  #inputTextArea,
+  #outputTextArea {
+    height: 500px; /* Adjust the height as needed */
+    resize: none; /* Disable textarea resizing */
+    margin: 0; /* Remove default margin */
+    outline: none; /* Remove outline on focus */
+  }
 
-                            <!-- Project Card Example -->
-                  
-									<br>
-									<video width="1200" height="700" controls autoplay>
-        <source src="{{url_for('static', filename='Demo.mp4')}}" type="video/mp4">
-    </video>
+  /* Container styling */
+  .container {
+    padding: 20px;
+    background-color: #f8f9fa; /* Bootstrap background color */
+    border-radius: 10px; /* Border radius for container */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for container */
+    position: relative;
+  }
+
+  /* Additional styling for buttons */
+  #clearBtn,
+  #generateBtn,
+  #downloadBtn {
+    margin-top: 20px;
+  }
+
+  /* Adjust the position of the top-left and top-right buttons */
+  #clearBtn {
+    float: left;
+  }
+
+  #downloadBtn {
+    float: right;
+  }
+
+  /* Add media query for responsiveness */
+  @media (max-width: 767.98px) {
+    #clearBtn,
+    #downloadBtn {
+      float: none;
+      margin-top: 10px;
+    }
+  }
+  #languageDropdown {
+            width: 50%;
+        }
+		 #dropdownLabel {
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
+            font-weight: bold;
+        }
+		
+  #testDataFrame {
+        width: 100%;
+        height: 50%; /* Set initial height */
+        display: none; /* Initially hide the testDataFrame */
+    }
+
+    #outputTextArea {
+        width: 100%;
+        height: 100%; /* Set initial height */
+    }
+</style>
+
+</head>
+<body>
+<h1 align=center style="font-size: 24px;">Generate Automated Test cases for API using swagger</h1>
+
+    <div class="container mt-5">
+
+<!-- Buttons -->
+<div class="row">
+    <div class="col-md-12">
+        <label for="languageDropdown" id="dropdownLabel" class="mt-2">Select Framework/Programming Language</label>
+			      <select id="languageDropdown" class="form-control ml-2">
+                    <option value="Rest Assured">Rest Assured</option>
+                    <option value="Karate Framework">Karate Framework</option>
+					<option value="Ready API java">Ready API java</option>
+                    </select>
+
+        <div class="form-check mt-2">
+            <input type="checkbox" class="form-check-input" id="generateDataCheckbox">
+            <label class="form-check-label" for="generateDataCheckbox">Generate Data</label>
+        </div>
+
+        <button id="clearBtn" class="btn btn-warning">Clear Input</button>
+        <button id="downloadBtn" class="btn btn-success ml-2" disabled>Download</button>
+        <div class="spinner-border text-primary" role="status" id="loadingSpinner" style="display: none;">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+</div>
+
+<!-- Text Areas -->
+<div class="row">
+    <div class="col-md-6">
+        <textarea id="inputTextArea" class="form-control" placeholder="Enter input..."></textarea>
+    </div>
+    <div class="col-md-6">
+        <div id="testDataFrame" style="display: none;">
+            <textarea id="testDataTextArea" class="form-control mt-2" placeholder="Test Data will be displayed here..." disabled></textarea>
+        </div>
+        <textarea id="outputTextArea" class="form-control mt-2" placeholder="Output will be displayed here..." disabled></textarea>
+    </div>
+</div>
+
+<!-- Generate Button -->
+<div class="row mt-3">
+    <div class="col-md-12 text-center">
+        <button id="generateBtn" class="btn btn-primary" onclick="runPythonScript()">Generate</button>
+    </div>
+</div>
+
+<!-- Script for adjusting inputTextArea size and handling Generate Data checkbox -->
+<script>
+    // Function to adjust the size and position of the inputTextArea, testDataFrame, and outputTextArea
+    function adjustSizesAndPositions() {
+        var checkboxChecked = document.getElementById('generateDataCheckbox').checked;
+        var testDataFrame = document.getElementById('testDataFrame');
+        var outputTextArea = document.getElementById('outputTextArea');
+        var inputTextArea = document.getElementById('inputTextArea');
+
+        if (checkboxChecked) {
+            // If checkbox is checked, adjust the heights and make testDataFrame visible
+            testDataFrame.style.height = '30%';
+            outputTextArea.style.height = '70%';
+            testDataFrame.style.display = 'block';
+        } else {
+            // If checkbox is unchecked, reset heights and hide testDataFrame
+            testDataFrame.style.height = '100%';
+            outputTextArea.style.height = '100%';
+            testDataFrame.style.display = 'none';
+        }
+
+        // Adjust the size of the inputTextArea
+        var inputDataHeight = testDataFrame.offsetHeight || 0;
+        var outputDataHeight = outputTextArea.offsetHeight || 0;
+        var totalHeight = inputDataHeight + outputDataHeight;
+        inputTextArea.style.height = totalHeight + 'px';
+    }
+
+    // Add event listener to the checkbox
+    document.getElementById('generateDataCheckbox').addEventListener('change', function () {
+        adjustSizesAndPositions();
+    });
+</script>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Script for running Python scripts -->
+<script>
+    function runPythonScript() {
+        document.getElementById('loadingSpinner').style.display = 'inline-block';
+        var selectedLanguage = document.getElementById('languageDropdown').value;
+        var pythonScriptPath;
+    switch (selectedLanguage) {
+        case 'Rest Assured':
+            pythonScriptPath = 'AzureOpenAI_RestMetlife.py';
+            break;
+        case 'Karate Framework':
+            pythonScriptPath = 'AzureOpenAI_KarateMetlife.py';
+            break;
+        case 'Ready API java':
+            pythonScriptPath = 'AzureOpenAI_ReadyAPIMetlife.py';
+            break;
+        default:
+            // Handle unexpected values or provide a default script path
+            break;
+    }
+        var inputText = document.getElementById('inputTextArea').value;
+
+        // Make an AJAX request to your Flask server
+        fetch('/run_script', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ scriptPath: pythonScriptPath, inputText: inputText }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('outputTextArea').value = data.output;
+            document.getElementById('downloadBtn').disabled = false;
+
+            // If "Generate Data" checkbox is checked, run another script
+            if (document.getElementById('generateDataCheckbox').checked) {
+                runTestDataPythonScript();
+            }
+        })
+        .catch(error => console.error('Error:', error))
+        .finally(() => {
+            // Hide loading spinner after response
+            document.getElementById('loadingSpinner').style.display = 'none';
+        });
+    }
+
+    function runTestDataPythonScript() {
+        // Add logic to run the second Python script and update testDataTextArea
+        // Example:
+        var pythonScriptPath = 'AzureOpenAI_MetlifeTestData.py';
+        var inputText = document.getElementById('inputTextArea').value;
+        fetch('/run_script', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ scriptPath: pythonScriptPath, inputText: inputText }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('testDataTextArea').value = data.output;
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+
+<script>
+document.getElementById('clearBtn').addEventListener('click', function () {
+        document.getElementById('inputTextArea').value = '';
+        // Clear Output TextArea as well
+        document.getElementById('outputTextArea').value = '';
+        // Disable the Download button after clearing
+        document.getElementById('downloadBtn').disabled = true;
+
+  /*fetch('/run_python_script', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ input: inputText }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Display output
+    document.getElementById('outputTextArea').value = data.output;
+
+    // Enable the download button
+    document.getElementById('downloadBtn').disabled = false;
+  })*/
+  
+  .catch(error => console.error('Error:', error))
+  .finally(() => {
+    // Re-enable the generate button after the fetch request is complete
+    document.getElementById('generateBtn').disabled = false;
+  });
+});
 
 
-                           
-               
+  // Download Button
+  document.getElementById('downloadBtn').addEventListener('click', function() {
+    var outputText = document.getElementById('outputTextArea').value;
+    downloadFile(outputText, 'output.txt');
+  });
+
+  // File Download Function
+function downloadFile(content, fileName) {
+    var blob = new Blob([content], { type: 'text/plain' });
+    var link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+  
+  // Copy to Clipboard Button
+document.getElementById('copyBtn').addEventListener('click', function() {
+    var outputText = document.getElementById('outputTextArea').value;
+    copyToClipboard(outputText);
+});
+
+// Copy to Clipboard Function
+function copyToClipboard(content) {
+    const textarea = document.createElement('textarea');
+    textarea.value = content;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+}
+</script>
+
+</body>
 
 
-                    </div>
 
                 </div>
                 <!-- /.container-fluid -->

@@ -1,0 +1,10 @@
+{
+  "title": "The Great Gatsby",
+  "author": {
+    "name": "F. Scott Fitzgerald",
+    "birth_date": "1896-09-24"
+  },
+  "publication_date": "1925-04-10",
+  "genre": "Fiction",
+  "ISBN": "978-3-16-148410-0"
+}

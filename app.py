@@ -22,7 +22,12 @@ def Generate_APITestCases():
 
 @app.route('/Code_Documentation')
 def Code_Documentation():
-    return render_template('Code_Documentation.html')      
+    return render_template('Code_Documentation.html')   
+
+@app.route('/Generate_TestCasesMetlifePOC')
+def Generate_TestCasesMetlifePOC():
+    return render_template('Generate_TestCasesMetlifePOC.html')  
+  
     
     
 

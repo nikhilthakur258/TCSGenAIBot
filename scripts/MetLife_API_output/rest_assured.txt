@@ -1,0 +1,36 @@
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import org.testng.annotations.Test;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+public class BookstoreApiTest {
+
+    @Test
+    public void testAddNewBook() {
+        // Base URL of the API
+        RestAssured.baseURI = "http://your-api-base-url";
+
+        // Read test data from a JSON file
+        String filePath = "path/to/testData.json";
+        String requestBody = readJsonFile(filePath);
+
+        // Perform the API request and validate the response
+        RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+            .when()
+                .post("/books")
+            .then()
+                .statusCode(201) // Expected HTTP status code for successful creation
+                .log().all();    // Log the response for debugging purposes
+    }
+
+    private String readJsonFile(String filePath) {
+        try {
+            return new String(Files.readAllBytes(Paths.get(filePath)));
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to read JSON file: " + e.getMessage());
+        }
+    }
+}

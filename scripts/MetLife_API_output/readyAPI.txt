@@ -1,0 +1,28 @@
+import groovy.json.JsonSlurper
+
+// Path to the JSON file containing the test data
+def filePath = "path/to/testData.json"
+
+// Load the JSON data from the file
+def testData = new JsonSlurper().parseText(new File(filePath).text)
+
+// Set the base URL of the API
+def baseURL = "http://your-api-base-url"
+
+// Create an HTTP request step
+def requestStep = testRunner.testCase.testSteps["Your Request Step Name"]  // Replace with the actual step name
+
+// Set the request endpoint
+requestStep.getProperty("Endpoint").setValue(baseURL + "/books")
+
+// Set the request method to POST
+requestStep.getProperty("Method").setValue("POST")
+
+// Set the request headers, if needed
+requestStep.testRequest.getRequestHeaders().addHeader("Content-Type", "application/json")
+
+// Set the request body using the loaded test data
+requestStep.testRequest.setRequestContent(testData.toString())
+
+// Run the test case
+testRunner.runTestStepByName("Your Request Step Name")  // Replace with the actual step name
