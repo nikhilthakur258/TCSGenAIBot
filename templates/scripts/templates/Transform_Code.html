@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Script Runner</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- FontAwesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- FileSaver.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <style>
+    /* Set a fixed height for both input and output areas */
+    #inputTextArea,
+    #outputContainer {
+      height: 200px; /* Adjust the height as needed */
+    }
+
+    /* Style the "Download Code" button */
+    #downloadCodeBtn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header">
+      <i id="downloadCodeBtn" class="fas fa-download"></i>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <textarea id="inputTextArea" class="form-control" placeholder="Enter Python script..."></textarea>
+        </div>
+        <div class="col-md-6">
+          <div id="outputContainer" class="form-control">
+            <!-- Output will be displayed here -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-center">
+      <button id="generateBtn" class="btn btn-primary">Generate</button>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- FontAwesome JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+<script>
+  document.getElementById('generateBtn').addEventListener('click', function() {
+    var inputText = document.getElementById('inputTextArea').value;
+
+    fetch('http://localhost:5000/run_script', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ input: inputText }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Display output
+      document.getElementById('outputContainer').innerText = data.output;
+    })
+    .catch(error => console.error('Error:', error));
+  });
+
+  document.getElementById('downloadCodeBtn').addEventListener('click', function() {
+    var inputText = document.getElementById('inputTextArea').value;
+    var outputText = document.getElementById('outputContainer').innerText;
+    var codeToDownload = inputText + '\n\n' + outputText;
+    downloadFile(codeToDownload, 'script_output.txt');
+  });
+
+  function downloadFile(content, fileName) {
+    var blob = new Blob([content], { type: 'text/plain' });
+    saveAs(blob, fileName);
+  }
+</script>
+
+</body>
+</html>
