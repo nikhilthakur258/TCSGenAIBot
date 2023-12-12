@@ -1,0 +1,30 @@
+Code Architecture and Understanding Document
+1. Programming Language and Version
+Language: COBOL
+Version: The provided code is written in a standard COBOL syntax. The specific COBOL version is not mentioned.
+2. Identification Division
+Program Identification:
+PROGRAM-ID. SampleProgram.: Specifies the name of the COBOL program.
+Author and Date Information:
+AUTHOR. Your Name.: Specifies the author of the program.
+DATE-WRITTEN. Todays-Date.: Specifies the date when the program was written.
+3. Data Division
+Working Storage Section:
+COUNTER: Numeric variable (3 digits) initialized to 1.
+TOTAL-SUM: Numeric variable (5 digits) initialized to 0.
+NUMBERS: Numeric array with 10 elements (3 digits each).
+RESULT-MESSAGE: Alphanumeric variable with a maximum length of 50 characters.
+4. Procedure Division
+Procedure Division:
+PERFORM INITIALIZE-DATA.: Calls a subroutine to initialize data.
+PERFORM VARYING COUNTER FROM 1 BY 1 UNTIL COUNTER > 10: Loop to compute the sum of elements in the NUMBERS array.
+PERFORM DISPLAY-RESULTS.: Calls a subroutine to display results.
+STOP RUN.: Ends the program.
+5. Subroutine: INITIALIZE-DATA
+Subroutine - INITIALIZE-DATA:
+Initializes the NUMBERS array with specific values.
+6. Subroutine: DISPLAY-RESULTS
+Subroutine - DISPLAY-RESULTS:
+Displays the result message and the total sum of numbers.
+7. Conclusion
+The COBOL program calculates the sum of predefined numbers and displays the result message. It follows a modular structure with a main procedure division and two subroutines for data initialization and result display. The program is well-organized and easy to understand.

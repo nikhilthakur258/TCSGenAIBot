@@ -44,7 +44,8 @@
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
-           <!-- Divider -->
+
+            <!-- Divider -->
             <hr class="sidebar-divider">
 
             <!-- Heading -->
@@ -77,6 +78,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="Generate.html">Generate unit test cases</a>
+						<a class="collapse-item" href="Generate.html">Find Security vulnerabilities</a>
                         <a class="collapse-item" href="Generate.html">Convert Code</a>
                         <a class="collapse-item" href="Generate.html">Optimize code</a>
                         <a class="collapse-item" href="Generate.html">Code Reverse Engineering</a>
@@ -95,13 +97,35 @@
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="Generate.html">Generate test cases</a>
+                        <a class="collapse-item" href="{{ url_for('Generate_TestCases')}}">Generate test cases for UI</a>
+						<a class="collapse-item" href="{{ url_for('Generate_APITestCases')}}">Generate test cases for API</a>
+						<a class="collapse-item" href="{{ url_for('Generate_TestCasesMetlifePOC')}}">Generate API tests with data</a>
                         <a class="collapse-item" href="Generate.html">Convert Code</a>
                         <a class="collapse-item" href="Generate.html">Optimize test cases</a>
                         <a class="collapse-item" href="Generate.html">Code Reverse Engineering</a>
+						<a class="collapse-item" href="Generate.html">Generate Test Data</a>
+
                     </div>
                 </div>
             </li>
+			
+			            <!-- Nav Item - Performance enginering Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities3"
+                    aria-expanded="true" aria-controls="collapseUtilities3">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Performance Engineering</span>
+                </a>
+                <div id="collapseUtilities3" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{ url_for('Generate_TestCases')}}">Generate performance test cases</a>
+
+
+                    </div>
+                </div>
+            </li>
+			
 			
 			            <!-- Nav Item - Run the bank Menu -->
             <li class="nav-item">
@@ -113,9 +137,10 @@
                 <div id="RTB" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="Generate.html">Find root cause</a>
-                        <a class="collapse-item" href="Generate.html">Fine tune code</a>
-                        <a class="collapse-item" href="Generate.html">Generate Code document</a>
+                        <a class="collapse-item" href="Generate.html">Locate Originating Cause</a>
+						<a class="collapse-item" href="Generate.html">Code Migration</a>
+                        <a class="collapse-item" href="Generate.html">Code Fine-Tuning</a>
+                        <a class="collapse-item" href="{{ url_for('Code_Documentation')}}">NexGen Code Documentation</a>
                     </div>
                 </div>
             </li>

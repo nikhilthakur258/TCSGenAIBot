@@ -44,7 +44,8 @@
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
-           <!-- Divider -->
+
+            <!-- Divider -->
             <hr class="sidebar-divider">
 
             <!-- Heading -->
@@ -77,6 +78,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="Generate.html">Generate unit test cases</a>
+						<a class="collapse-item" href="Generate.html">Find Security vulnerabilities</a>
                         <a class="collapse-item" href="Generate.html">Convert Code</a>
                         <a class="collapse-item" href="Generate.html">Optimize code</a>
                         <a class="collapse-item" href="Generate.html">Code Reverse Engineering</a>
@@ -96,13 +98,34 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{ url_for('Generate_TestCases')}}">Generate test cases for UI</a>
-						<a class="collapse-item" href="{{ url_for('Generate_TestCases')}}">Generate test cases for API</a>
+						<a class="collapse-item" href="{{ url_for('Generate_APITestCases')}}">Generate test cases for API</a>
+						<a class="collapse-item" href="{{ url_for('Generate_TestCasesMetlifePOC')}}">Generate API tests with data</a>
                         <a class="collapse-item" href="Generate.html">Convert Code</a>
                         <a class="collapse-item" href="Generate.html">Optimize test cases</a>
                         <a class="collapse-item" href="Generate.html">Code Reverse Engineering</a>
+						<a class="collapse-item" href="Generate.html">Generate Test Data</a>
+
                     </div>
                 </div>
             </li>
+			
+			            <!-- Nav Item - Performance enginering Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities3"
+                    aria-expanded="true" aria-controls="collapseUtilities3">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Performance Engineering</span>
+                </a>
+                <div id="collapseUtilities3" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{ url_for('Generate_TestCases')}}">Generate performance test cases</a>
+
+
+                    </div>
+                </div>
+            </li>
+			
 			
 			            <!-- Nav Item - Run the bank Menu -->
             <li class="nav-item">
@@ -114,9 +137,10 @@
                 <div id="RTB" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="Generate.html">Find root cause</a>
-                        <a class="collapse-item" href="Generate.html">Fine tune code</a>
-                        <a class="collapse-item" href="Generate.html">Generate Code document</a>
+                        <a class="collapse-item" href="Generate.html">Locate Originating Cause</a>
+						<a class="collapse-item" href="Generate.html">Code Migration</a>
+                        <a class="collapse-item" href="Generate.html">Code Fine-Tuning</a>
+                        <a class="collapse-item" href="{{ url_for('Code_Documentation')}}">NexGen Code Documentation</a>
                     </div>
                 </div>
             </li>
@@ -390,7 +414,8 @@
   /* Set a fixed height for both text areas */
   #inputTextArea,
   #outputTextArea {
-    height: 500px; /* Adjust the height as needed */
+    height: 300px; /* Adjust the height as needed */
+    width: 100%;
     resize: none; /* Disable textarea resizing */
     margin: 0; /* Remove default margin */
     outline: none; /* Remove outline on focus */
@@ -439,8 +464,6 @@
             font-weight: bold;
         }
 		    #outputTextArea {
-        width: 100%;
-        height: 100%;
         background-color: black;
         color: white;
 	
@@ -473,15 +496,17 @@
         </div>
 
         <!-- Text Areas -->
-        <div class="row">
-            <div class="col-md-6">
-                <textarea id="inputTextArea" class="form-control" placeholder="Enter input..."></textarea>
-            </div>
-            <div class="col-md-6">
-                <textarea id="outputTextArea" class="form-control" placeholder="Output will be displayed here..."
-                    disabled></textarea>
-            </div>
-        </div>
+<!-- Text Areas -->
+<div class="row">
+    <div class="col-md-6">
+        <label for="inputTextArea" class="mt-2"><strong>Enter Requirements Here</strong></label>
+        <textarea id="inputTextArea" class="form-control" placeholder="Enter requirements..."></textarea>
+    </div>
+    <div class="col-md-6">
+        <label for="outputTextArea" class="mt-2"><strong>Automated Test Cases</strong></label>
+        <textarea id="outputTextArea" class="form-control" placeholder="Output will be displayed here..." disabled></textarea>
+    </div>
+</div>
 
         <!-- Generate Button -->
         <div class="row mt-3">
@@ -498,8 +523,12 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
 function runPythonScript() {
-	document.getElementById('loadingSpinner').style.display = 'inline-block';
+    console.log('Starting runPythonScript');
+
+    document.getElementById('loadingSpinner').style.display = 'inline-block';
     var selectedLanguage = document.getElementById('languageDropdown').value;
+    console.log('Selected Language:', selectedLanguage);
+
     var pythonScriptPath;
     switch (selectedLanguage) {
         case 'Rest Assured':
@@ -512,10 +541,14 @@ function runPythonScript() {
             pythonScriptPath = 'AzureOpenAI_ReadyAPI.py';
             break;
         default:
+            console.error('Unexpected language value:', selectedLanguage);
             // Handle unexpected values or provide a default script path
             break;
     }
+    console.log('Python Script Path:', pythonScriptPath);
+
     var inputText = document.getElementById('inputTextArea').value;
+    console.log('Input Text:', inputText);
 
     // Make an AJAX request to your Flask server
     fetch('/run_script', {
@@ -527,6 +560,7 @@ function runPythonScript() {
     })
     .then(response => response.json())
     .then(data => {
+        console.log('Response Data:', data);
         document.getElementById('outputTextArea').value = data.output;
         document.getElementById('downloadBtn').disabled = false;
     })
@@ -547,32 +581,15 @@ document.getElementById('clearBtn').addEventListener('click', function () {
         // Disable the Download button after clearing
         document.getElementById('downloadBtn').disabled = true;
 
-  /*fetch('/run_python_script', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ input: inputText }),
-  })
-  .then(response => response.json())
-  .then(data => {
-    // Display output
-    document.getElementById('outputTextArea').value = data.output;
-
-    // Enable the download button
-    document.getElementById('downloadBtn').disabled = false;
-  })*/
-  
-  .catch(error => console.error('Error:', error))
-  .finally(() => {
     // Re-enable the generate button after the fetch request is complete
     document.getElementById('generateBtn').disabled = false;
-  });
+
 });
+</script>
 
-
-  // Download Button
-  document.getElementById('downloadBtn').addEventListener('click', function() {
+<!-- Download Button -->
+<script>
+document.getElementById('downloadBtn').addEventListener('click', function() {
     var outputText = document.getElementById('outputTextArea').value;
     downloadFile(outputText, 'output.txt');
   });
@@ -586,22 +603,6 @@ function downloadFile(content, fileName) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-}
-  
-  // Copy to Clipboard Button
-document.getElementById('copyBtn').addEventListener('click', function() {
-    var outputText = document.getElementById('outputTextArea').value;
-    copyToClipboard(outputText);
-});
-
-// Copy to Clipboard Function
-function copyToClipboard(content) {
-    const textarea = document.createElement('textarea');
-    textarea.value = content;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
 }
 </script>
 
