@@ -498,8 +498,12 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
 function runPythonScript() {
-	document.getElementById('loadingSpinner').style.display = 'inline-block';
+    console.log('Starting runPythonScript');
+
+    document.getElementById('loadingSpinner').style.display = 'inline-block';
     var selectedLanguage = document.getElementById('languageDropdown').value;
+    console.log('Selected Language:', selectedLanguage);
+
     var pythonScriptPath;
     switch (selectedLanguage) {
         case 'robot_framework':
@@ -512,10 +516,14 @@ function runPythonScript() {
             pythonScriptPath = 'AzureOpenAI_python.py';
             break;
         default:
+            console.error('Unexpected language value:', selectedLanguage);
             // Handle unexpected values or provide a default script path
             break;
     }
+    console.log('Python Script Path:', pythonScriptPath);
+
     var inputText = document.getElementById('inputTextArea').value;
+    console.log('Input Text:', inputText);
 
     // Make an AJAX request to your Flask server
     fetch('/run_script', {
@@ -527,16 +535,20 @@ function runPythonScript() {
     })
     .then(response => response.json())
     .then(data => {
+        console.log('Response Data:', data);
         document.getElementById('outputTextArea').value = data.output;
         document.getElementById('downloadBtn').disabled = false;
     })
-    .catch(error => console.error('Error:', error))
-	.finally(() => {
-                // Hide loading spinner after response
-                document.getElementById('loadingSpinner').style.display = 'none';
-});
-
+    .catch(error => {
+        console.error('Error:', error);
+    })
+    .finally(() => {
+        console.log('Request completed');
+        // Hide loading spinner after response
+        document.getElementById('loadingSpinner').style.display = 'none';
+    });
 }
+
 
 </script>
 <script>
