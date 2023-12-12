@@ -27,6 +27,10 @@ def Code_Documentation():
 @app.route('/Generate_TestCasesMetlifePOC')
 def Generate_TestCasesMetlifePOC():
     return render_template('Generate_TestCasesMetlifePOC.html')  
+    
+@app.route('/Code_migration')
+def Code_migration():
+    return render_template('Code_migration.html')  
   
     
     

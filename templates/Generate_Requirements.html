@@ -414,7 +414,8 @@
   /* Set a fixed height for both text areas */
   #inputTextArea,
   #outputTextArea {
-    height: 500px; /* Adjust the height as needed */
+    height: 300px; /* Adjust the height as needed */
+    width: 100%;
     resize: none; /* Disable textarea resizing */
     margin: 0; /* Remove default margin */
     outline: none; /* Remove outline on focus */
@@ -454,14 +455,20 @@
     }
   }
   #languageDropdown {
-            width: 50%;
-        }
-		 #dropdownLabel {
-            display: block;
-            margin-bottom: 5px;
-            text-align: left;
-            font-weight: bold;
-        }
+    width: 50%;
+  }
+
+  #dropdownLabel {
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+    font-weight: bold;
+  }
+
+  #outputTextArea {
+    background-color: black;
+    color: white;
+  }
 </style>
 
 </head>
@@ -473,13 +480,7 @@
         <!-- Buttons -->
         <div class="row">
             <div class="col-md-12">
-			 <label for="languageDropdown" id="dropdownLabel"  class="mt-2">Select Framework/Programming Language</label>
-			      <select id="languageDropdown" class="form-control ml-2">
-                    <option value="robot_framework">Robot Framework</option>
-                    <option value="java_selenium">Java Selenium</option>
-                    <option value="python_selenium">Python Selenium</option>
-                </select>
-				
+			
 				    <div class="spinner-border text-primary" role="status" id="loadingSpinner" style="display: none;">
         <span class="sr-only">Loading...</span>
     </div>
@@ -503,7 +504,7 @@
         <!-- Generate Button -->
         <div class="row mt-3">
             <div class="col-md-12 text-center">
-                <button id="generateBtn" class="btn btn-primary" onclick="runPythonScript()">Generate</button>
+                <button id="generateBtn" class="btn btn-primary" onclick="runPythonScript()">Fine tune requirements</button>
             </div>
         </div>
 
