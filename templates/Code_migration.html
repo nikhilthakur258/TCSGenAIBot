@@ -474,7 +474,7 @@
 
 </head>
 <body>
-<h1 align=center style="font-size: 24px;">Generate Automated Test cases for UI</h1>
+<h1 align=center style="font-size: 24px;">Code Migration </h1>
 
     <div class="container mt-5">
 
@@ -483,9 +483,13 @@
     <div class="col-md-12">
         <label for="languageDropdown" id="dropdownLabel"  class="mt-2">Select Framework/Programming Language</label>
         <select id="languageDropdown" class="form-control ml-2">
-            <option value="robot_framework">Robot Framework</option>
-            <option value="java_selenium">Java Selenium</option>
-            <option value="python_selenium">Python Selenium</option>
+            <option value="COBOL4">COBOL4</option>
+            <option value="COBOL6">COBOL6</option>
+			<option value="COBOL85">COBOL85</option>
+            <option value="Python">Python</option>
+			 <option value="Java">Java</option>
+			 <option value="PHP">PHP</option>
+			 
         </select>
 
         <div class="spinner-border text-primary" role="status" id="loadingSpinner" style="display: none;">
@@ -501,11 +505,11 @@
 <!-- Text Areas -->
 <div class="row">
     <div class="col-md-6">
-        <label for="inputTextArea" class="mt-2"><strong>Enter Requirements Here</strong></label>
+        <label for="inputTextArea" class="mt-2"><strong>Enter Code Here</strong></label>
         <textarea id="inputTextArea" class="form-control" placeholder="Enter requirements..."></textarea>
     </div>
     <div class="col-md-6">
-        <label for="outputTextArea" class="mt-2"><strong>Automated Test Cases</strong></label>
+        <label for="outputTextArea" class="mt-2"><strong>Transformed Code</strong></label>
         <textarea id="outputTextArea" class="form-control" placeholder="Output will be displayed here..." disabled></textarea>
     </div>
 </div>
