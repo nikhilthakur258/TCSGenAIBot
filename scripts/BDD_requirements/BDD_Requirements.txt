@@ -1,36 +1,52 @@
-Feature: Signed-in users get larger capacity
+Feature: Gate Icon Configuration and Interaction
 
-  Scenario: Upload and manage spreadsheet files
+  Scenario: Selecting an icon to represent gate positions
+    Given an icon representing a gate
+    When the icon is selected during detailed design to show a closed gate position
+    Then the icon should visually represent a closed gate
 
-    Given a user opens https://www.example.com using Chrome
-    And the user clicks on "Upload Files"
-    And the page reloads
-    And the user clicks on "Spreadsheet Formats"
-    Then the buttons "XLS" and "XLSX" show
+  Scenario: Selecting an icon to represent an open gate
+    Given an icon representing a gate
+    When the icon is selected during detailed design to show an open gate position
+    Then the icon should visually represent an open gate
 
-    And the user clicks on "XLSX"
-    And the user selects "500kb-sheet.xlsx"
-    Then the upload completes
-    And the table "Uploaded Files" contains a cell with "500kb-sheet.xlsx"
+  Scenario: Selecting an icon to represent a partially open gate (15% open)
+    Given an icon representing a gate
+    When the icon is selected during detailed design to show a partially open (15%) gate position
+    Then the icon should visually represent a partially open gate
 
-    And the user clicks on "XLSX"
-    And the user selects "1mb-sheet.xlsx"
-    Then the upload fails
-    And the table "Uploaded Files" does not contain a cell with "1mb-sheet.xlsx"
+  Scenario: Configuring the gate icon to display gate name
+    Given a gate icon
+    When the icon is configured to show the name of the gate
+    Then the icon should display the gate name
 
-    And the user clicks on "Login"
-    And the user enters "testuser123" into the "username" field
-    And the user enters "$Pass123" into the "password" field
-    And the user clicks on "Sign in"
-    And the page reloads
-    Then the table "Uploaded Files" contains a cell with "500kb-sheet.xlsx"
-    And the table "Uploaded Files" does not contain a cell with "1mb-sheet.xlsx"
+  Scenario: Configuring the gate icon to show gate state
+    Given a gate icon
+    When the icon is configured to show the state of the gate (e.g., open or closed)
+    Then the icon should display the state of the gate
 
-    And the user clicks on "spreadsheet formats"
-    Then the buttons "XLS" and "XLSX" show
+  Scenario: Configuring the gate icon to show gate status
+    Given a gate icon
+    When the icon is configured to show the status of the gate (operational, failed, or no data)
+    Then the icon should display the status of the gate
+    And the color of the icon should change to reflect the gate status
 
-    And the user clicks on "XLSX"
-    And the user selects "1mb-sheet.xlsx"
-    Then the upload completes
-    And the table "Uploaded Files" contains a cell with "1mb-sheet.xlsx"
-    And the table "Uploaded Files" contains a cell with "500kb-sheet.xlsx"
+  Scenario: Displaying a summary text window on mouse hover
+    Given a gate icon
+    When the operator moves the mouse over the gate icon
+    Then a text window should be displayed showing a summary of the gate status
+    And the details of the summary status display should be as defined in the GUI design document
+
+  Scenario: Activating detailed device status window with double left click
+    Given a gate icon
+    When the operator double left-clicks on the icon
+    Then a detailed device status window for the selected gate should be activated
+    And a circle should be displayed over the gate icon for the duration of the detailed device status window
+
+  Scenario: Activating device control window with right click
+    Given a gate icon
+    When the operator right-clicks on the icon
+    Then a pop-up menu of available device actions should be displayed
+    And the user may select an action from the menu
+    And a device control window for the selected gate should be activated
+    And a circle should be displayed over the gate icon for the duration of the device control window

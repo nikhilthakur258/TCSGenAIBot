@@ -39,6 +39,15 @@ def Convert_Requirements_BDD():
 @app.route('/Generate_UnitTestCases')
 def Generate_UnitTestCases():
     return render_template('Generate_UnitTestCases.html') 
+    
+@app.route('/Generate_performanceTestCases')
+def Generate_performanceTestCases():
+    return render_template('Generate_performanceTestCases.html') 
+
+@app.route('/Generate_code_optimization')
+def Generate_code_optimization():
+    return render_template('Generate_code_optimization.html') 
+    
 
 
 @app.route('/run_script', methods=['POST'])

@@ -79,9 +79,8 @@
                         <a class="collapse-item" href="{{ url_for('Generate_UnitTestCases') }}">Generate unit test cases</a>
 						<a class="collapse-item" href="Generate.html">Find Security vulnerabilities</a>
                         <a class="collapse-item" href="{{ url_for('Code_migration') }}">Convert Code</a>
-                        <a class="collapse-item" href="Generate.html">Optimize code</a>
-                        <a class="collapse-item" href="Generate.html">Code Reverse Engineering</a>
-						<a class="collapse-item" href="Generate.html">Generate Code arch doc</a>
+                        <a class="collapse-item" href="{{ url_for('Generate_code_optimization')}}">Optimize code</a>
+						<a class="collapse-item" href="{{ url_for('Code_Documentation')}}">NexGen Code Documentation</a>
                     </div>
                 </div>
             </li>
@@ -101,7 +100,7 @@
 						<a class="collapse-item" href="{{ url_for('Generate_TestCasesMetlifePOC')}}">Generate API tests with data</a>
                         <a class="collapse-item" href="{{ url_for('Code_migration') }}">Convert Code</a>
                         <a class="collapse-item" href="Generate.html">Optimize test cases</a>
-                        <a class="collapse-item" href="Generate.html">Code Reverse Engineering</a>
+						<a class="collapse-item" href="{{ url_for('Code_Documentation')}}">NexGen Code Documentation</a>
 						<a class="collapse-item" href="Generate.html">Generate Test Data</a>
 
                     </div>
@@ -118,7 +117,7 @@
                 <div id="collapseUtilities3" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ url_for('Generate_TestCases')}}">Generate performance test cases</a>
+                        <a class="collapse-item" href="{{ url_for('Generate_performanceTestCases')}}">Generate performance test cases</a>
 
 
                     </div>
@@ -138,7 +137,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="Generate.html">Locate Originating Cause</a>
 						<a class="collapse-item" href="{{ url_for('Code_migration') }}">Code Migration</a>
-                        <a class="collapse-item" href="Generate.html">Code Fine-Tuning</a>
+                        <a class="collapse-item" href="{{ url_for('Generate_code_optimization')}}">Code Fine-Tuning</a>
                         <a class="collapse-item" href="{{ url_for('Code_Documentation')}}">NexGen Code Documentation</a>
                     </div>
                 </div>

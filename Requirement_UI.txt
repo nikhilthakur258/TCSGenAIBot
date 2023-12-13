@@ -1,1 +1,56 @@
 Write code in Java selenium to test below scenario: 
+Description
+
+openapi: 3.0.0
+info:
+  title: Bookstore API
+  version: 1.0.0
+  description: API for managing a bookstore
+
+paths:
+  /books:
+    post:
+      summary: Add a new book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: The title of the book
+                author:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: The name of the author
+                    birth_date:
+                      type: string
+                      format: date
+                      description: The birth date of the author
+                publication_date:
+                  type: string
+                  format: date
+                  description: The publication date of the book
+                genre:
+                  type: string
+                  description: The genre of the book
+                ISBN:
+                  type: string
+                  description: The ISBN of the book
+              required:
+                - title
+                - author
+                - publication_date
+                - genre
+                - ISBN
+      responses:
+        '201':
+          description: Book created successfully
+        '400':
+          description: Bad request, check your input data
+        '500':
+          description: Internal server error

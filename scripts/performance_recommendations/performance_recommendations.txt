@@ -1,0 +1,50 @@
+To generate performance test cases for the given scenario using JMeter, you can focus on the interactions involving user actions and file uploads. Below are some performance test cases you might consider:
+
+Load Testing on Home Page:
+
+Simulate multiple users opening the home page concurrently.
+Measure the response time and throughput under increasing user loads.
+Load Testing on "Upload Files" Page:
+
+Simulate multiple users clicking on "Upload Files" concurrently.
+Measure the response time and throughput under increasing user loads.
+Load Testing on "Spreadsheet Formats" Page:
+
+Simulate multiple users clicking on "Spreadsheet Formats" concurrently.
+Measure the response time and throughput under increasing user loads.
+Load Testing on "XLSX" Button Click:
+
+Simulate multiple users clicking on the "XLSX" button concurrently.
+Measure the response time and throughput under increasing user loads.
+Load Testing on File Upload (500kb-sheet.xlsx):
+
+Simulate multiple users uploading the "500kb-sheet.xlsx" file concurrently.
+Measure the response time and throughput under increasing user loads.
+Check the server's capacity to handle simultaneous file uploads.
+Load Testing on "XLSX" Button Click Again:
+
+Simulate multiple users clicking on the "XLSX" button again concurrently.
+Measure the response time and throughput under increasing user loads.
+Load Testing on File Upload Failure (1mb-sheet.xlsx):
+
+Simulate multiple users attempting to upload the "1mb-sheet.xlsx" file concurrently.
+Measure the response time and throughput under increasing user loads.
+Check how the system handles file upload failures.
+Load Testing on "Login" Page:
+
+Simulate multiple users clicking on "Login" concurrently.
+Measure the response time and throughput under increasing user loads.
+Load Testing on User Authentication (Sign in):
+
+Simulate multiple users entering credentials and clicking "Sign in" concurrently.
+Measure the response time and throughput under increasing user loads.
+Evaluate the server's performance during authentication processes.
+Load Testing on "Spreadsheet Formats" Page Again:
+
+Simulate multiple users clicking on "Spreadsheet Formats" again concurrently.
+Measure the response time and throughput under increasing user loads.
+Load Testing on File Upload (1mb-sheet.xlsx):
+
+Simulate multiple users uploading the "1mb-sheet.xlsx" file concurrently.
+Measure the response time and throughput under increasing user loads.
+Check the server's capacity to handle simultaneous file uploads of larger files.
