@@ -1,56 +1,41 @@
 Write code in Java selenium to test below scenario: 
-Description
+IDENTIFICATION DIVISION.
+PROGRAM-ID. SampleProgram.
+AUTHOR. Your Name.
+DATE-WRITTEN. Todays-Date.
 
-openapi: 3.0.0
-info:
-  title: Bookstore API
-  version: 1.0.0
-  description: API for managing a bookstore
+DATA DIVISION.
+WORKING-STORAGE SECTION.
+01 COUNTER PIC 9(3) VALUE 1.
+01 TOTAL-SUM PIC 9(5) VALUE 0.
 
-paths:
-  /books:
-    post:
-      summary: Add a new book
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                  description: The title of the book
-                author:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                      description: The name of the author
-                    birth_date:
-                      type: string
-                      format: date
-                      description: The birth date of the author
-                publication_date:
-                  type: string
-                  format: date
-                  description: The publication date of the book
-                genre:
-                  type: string
-                  description: The genre of the book
-                ISBN:
-                  type: string
-                  description: The ISBN of the book
-              required:
-                - title
-                - author
-                - publication_date
-                - genre
-                - ISBN
-      responses:
-        '201':
-          description: Book created successfully
-        '400':
-          description: Bad request, check your input data
-        '500':
-          description: Internal server error
+01 NUMBERS OCCURS 10 TIMES PIC 9(3).
+01 RESULT-MESSAGE PIC X(50).
+
+PROCEDURE DIVISION.
+    PERFORM INITIALIZE-DATA.
+
+
+
+PERFORM VARYING COUNTER FROM 1 BY 1 UNTIL COUNTER > 10
+    COMPUTE TOTAL-SUM = TOTAL-SUM + NUMBERS(COUNTER)
+END-PERFORM.
+
+PERFORM DISPLAY-RESULTS.
+
+STOP RUN.
+INITIALIZE-DATA.
+    MOVE 10 TO NUMBERS(1).
+    MOVE 20 TO NUMBERS(2).
+    MOVE 30 TO NUMBERS(3).
+    MOVE 40 TO NUMBERS(4).
+    MOVE 50 TO NUMBERS(5).
+    MOVE 60 TO NUMBERS(6).
+    MOVE 70 TO NUMBERS(7).
+    MOVE 80 TO NUMBERS(8).
+    MOVE 90 TO NUMBERS(9).
+    MOVE 100 TO NUMBERS(10).
+
+DISPLAY-RESULTS.
+    MOVE 'The sum of the numbers is: ' TO RESULT-MESSAGE.
+    DISPLAY RESULT-MESSAGE TOTAL-SUM.
