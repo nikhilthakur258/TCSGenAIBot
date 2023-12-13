@@ -1,0 +1,73 @@
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class FileUploadTest {
+
+    private User user;
+
+    @Before
+    public void setUp() {
+        // Initialize the user or relevant objects before each test
+        user = new User();
+    }
+
+    @Test
+    public void testSuccessfulFileUpload() {
+        user.openWebsite("https://www.example.com", "Chrome");
+        user.clickOnButton("Upload Files");
+        user.reloadPage();
+        user.clickOnButton("Spreadsheet Formats");
+        assertTrue(user.buttonsShow("XLS", "XLSX"));
+
+        user.clickOnButton("XLSX");
+        user.selectFile("500kb-sheet.xlsx");
+        assertTrue(user.uploadCompletes());
+        assertTrue(user.tableContainsCell("Uploaded Files", "500kb-sheet.xlsx"));
+
+        user.clickOnButton("XLSX");
+        user.selectFile("1mb-sheet.xlsx");
+        assertFalse(user.uploadFails());
+        assertFalse(user.tableContainsCell("Uploaded Files", "1mb-sheet.xlsx"));
+    }
+
+    @Test
+    public void testLoginAndFileUpload() {
+        // Similar to the first scenario but includes login steps
+
+        user.openWebsite("https://www.example.com", "Chrome");
+        user.clickOnButton("Upload Files");
+        user.reloadPage();
+        user.clickOnButton("Spreadsheet Formats");
+        assertTrue(user.buttonsShow("XLS", "XLSX"));
+
+        user.clickOnButton("XLSX");
+        user.selectFile("500kb-sheet.xlsx");
+        assertTrue(user.uploadCompletes());
+        assertTrue(user.tableContainsCell("Uploaded Files", "500kb-sheet.xlsx"));
+
+        user.clickOnButton("XLSX");
+        user.selectFile("1mb-sheet.xlsx");
+        assertFalse(user.uploadFails());
+        assertFalse(user.tableContainsCell("Uploaded Files", "1mb-sheet.xlsx"));
+
+        // Login steps
+        user.clickOnButton("Login");
+        user.enterText("testuser123", "username");
+        user.enterText("$Pass123", "password");
+        user.clickOnButton("Sign in");
+        user.reloadPage();
+        assertTrue(user.tableContainsCell("Uploaded Files", "500kb-sheet.xlsx"));
+        assertFalse(user.tableContainsCell("Uploaded Files", "1mb-sheet.xlsx"));
+
+        // Additional steps after login
+        user.clickOnButton("spreadsheet formats");
+        assertTrue(user.buttonsShow("XLS", "XLSX"));
+
+        user.clickOnButton("XLSX");
+        user.selectFile("1mb-sheet.xlsx");
+        assertTrue(user.uploadCompletes());
+        assertTrue(user.tableContainsCell("Uploaded Files", "1mb-sheet.xlsx"));
+        assertTrue(user.tableContainsCell("Uploaded Files", "500kb-sheet.xlsx"));
+    }
+}

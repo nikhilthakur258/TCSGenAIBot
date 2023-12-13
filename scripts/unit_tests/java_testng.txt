@@ -1,0 +1,114 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+public class ExampleTest {
+
+    private WebDriver driver;
+
+    @BeforeClass
+    public void setUp() {
+        // Set up the WebDriver (Assuming ChromeDriver in this example)
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        driver = new ChromeDriver();
+
+        // Navigate to the application
+        driver.get("https://www.example.com");
+    }
+
+    @AfterClass
+    public void tearDown() {
+        // Close the browser after all tests are executed
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void signedInUserGetsLargerCapacity() {
+        // Test steps go here
+        // Given a user opens https://www.example.com using Chrome
+        // And the user clicks on "Upload Files"
+        // And the page reloads
+        // And the user clicks on "Spreadsheet Formats"
+        navigateToSpreadsheetFormats();
+
+        // Then the buttons "XLS" and "XLSX" show
+        assertButtonsXlsAndXlsxShow();
+
+        // And the user clicks on "XLSX"
+        // And the user selects "500kb-sheet.xlsx"
+        uploadFile("500kb-sheet.xlsx");
+
+        // Then the upload completes
+        // And the table "Uploaded Files" contains a cell with "500kb-sheet.xlsx"
+        assertFileIsUploaded("500kb-sheet.xlsx");
+
+        // And the user clicks on "XLSX"
+        // And the user selects "1mb-sheet.xlsx"
+        uploadFile("1mb-sheet.xlsx");
+
+        // Then the upload fails
+        // And the table "Uploaded Files" does not contain a cell with "1mb-sheet.xlsx"
+        assertFileIsNotUploaded("1mb-sheet.xlsx");
+
+        // And the user clicks on "Login"
+        // And the user enters "testuser123" into the "username" field
+        // And the user enters "$Pass123" into the "password" field
+        // And the user clicks on "Sign in"
+        login("testuser123", "$Pass123");
+
+        // And the page reloads
+        // Then the table "Uploaded Files" contains a cell with "500kb-sheet.xlsx"
+        // And the table "Uploaded Files" does not contain a cell with "1mb-sheet.xlsx"
+        assertFileIsUploaded("500kb-sheet.xlsx");
+        assertFileIsNotUploaded("1mb-sheet.xlsx");
+
+        // And the user clicks on "spreadsheet formats"
+        navigateToSpreadsheetFormats();
+
+        // Then the buttons "XLS" and "XLSX" show
+        assertButtonsXlsAndXlsxShow();
+
+        // And the user clicks on "XLSX"
+        // And the user selects "1mb-sheet.xlsx"
+        uploadFile("1mb-sheet.xlsx");
+
+        // Then the upload completes
+        // And the table "Uploaded Files" contains a cell with "1mb-sheet.xlsx"
+        // And the table "Uploaded Files" contains a cell with "500kb-sheet.xlsx"
+        assertFileIsUploaded("1mb-sheet.xlsx");
+        assertFileIsUploaded("500kb-sheet.xlsx");
+    }
+
+    // Implement helper methods for each step in the scenario
+
+    private void navigateToSpreadsheetFormats() {
+        // Implementation for navigating to spreadsheet formats
+    }
+
+    private void assertButtonsXlsAndXlsxShow() {
+        // Implementation for asserting that buttons "XLS" and "XLSX" show
+    }
+
+    private void uploadFile(String fileName) {
+        // Implementation for uploading a file
+    }
+
+    private void assertFileIsUploaded(String fileName) {
+        // Implementation for asserting that a file is uploaded
+    }
+
+    private void assertFileIsNotUploaded(String fileName) {
+        // Implementation for asserting that a file is not uploaded
+    }
+
+    private void login(String username, String password) {
+        // Implementation for logging in
+    }
+}

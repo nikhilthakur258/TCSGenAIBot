@@ -454,6 +454,7 @@
       margin-top: 10px;
     }
   }
+
   #languageDropdown {
     width: 50%;
   }
@@ -473,22 +474,31 @@
 
 </head>
 <body>
-<h1 align=center style="font-size: 24px;">Fine-tune requirements</h1>
+<h1 align=center style="font-size: 24px;">Generate Unit Test cases</h1>
 
     <div class="container mt-5">
 
         <!-- Buttons -->
-        <div class="row">
-            <div class="col-md-12">
-			
-				    <div class="spinner-border text-primary" role="status" id="loadingSpinner" style="display: none;">
-        <span class="sr-only">Loading...</span>
-    </div>
-                <button id="clearBtn" class="btn btn-warning">Clear Input</button>
+<div class="row">
+    <div class="col-md-12">
+        <label for="languageDropdown" id="dropdownLabel"  class="mt-2">Select Framework/Programming Language</label>
+        <select id="languageDropdown" class="form-control ml-2">
+            <option value="java_junit">Java JUnit</option>
+			<option value="java_testNG">Java testNG</option>
+            <option value="python_pytest">Python Pytest</option>
+            <option value="c_nunit">C# NUnit</option>
+			<option value="javascript_mocha">Java script Mocha</option>
+			<option value="javascript_jasmine">Java script Jasmine</option>
+        </select>
 
-                <button id="downloadBtn" class="btn btn-success ml-2" disabled>Download</button>
-            </div>
+        <div class="spinner-border text-primary" role="status" id="loadingSpinner" style="display: none;">
+            <span class="sr-only">Loading...</span>
         </div>
+
+        <button id="clearBtn" class="btn btn-warning">Clear Input</button>
+        <button id="downloadBtn" class="btn btn-success ml-2" disabled>Download</button>
+    </div>
+</div>
 
         <!-- Text Areas -->
 <!-- Text Areas -->
@@ -498,7 +508,7 @@
         <textarea id="inputTextArea" class="form-control" placeholder="Enter requirements..."></textarea>
     </div>
     <div class="col-md-6">
-        <label for="outputTextArea" class="mt-2"><strong>Fine tuned requirments</strong></label>
+        <label for="outputTextArea" class="mt-2"><strong>Unit Test Cases</strong></label>
         <textarea id="outputTextArea" class="form-control" placeholder="Output will be displayed here..." disabled></textarea>
     </div>
 </div>
@@ -506,7 +516,7 @@
         <!-- Generate Button -->
         <div class="row mt-3">
             <div class="col-md-12 text-center">
-                <button id="generateBtn" class="btn btn-primary" onclick="runPythonScript()">Fine tune requirements</button>
+                <button id="generateBtn" class="btn btn-primary" onclick="runPythonScript()">Generate</button>
             </div>
         </div>
 
@@ -518,10 +528,35 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
 function runPythonScript() {
-	document.getElementById('loadingSpinner').style.display = 'inline-block';
+    console.log('Starting runPythonScript');
 
-    var pythonScriptPath = "AzureOpenAI_fine_tuned_requirements.py";
+    document.getElementById('loadingSpinner').style.display = 'inline-block';
+    var selectedLanguage = document.getElementById('languageDropdown').value;
+    console.log('Selected Language:', selectedLanguage);
+
+    var pythonScriptPath;
+    switch (selectedLanguage) {
+        case 'java_junit':
+            pythonScriptPath = 'AzureOpenAI_unittests_java_junit.py';
+            break;
+        case 'java_testNG':
+            pythonScriptPath = 'AzureOpenAI_unittests_java_testNG.py';
+            break;
+        case 'python_pytest':
+            pythonScriptPath = 'AzureOpenAI_unittests_python_pytest.py';
+            break;
+        case 'c_nunit':
+            pythonScriptPath = 'AzureOpenAI_unittests_c_nunit.py';
+            break;			
+        default:
+            console.error('Unexpected language value:', selectedLanguage);
+            // Handle unexpected values or provide a default script path
+            break;
+    }
+    console.log('Python Script Path:', pythonScriptPath);
+
     var inputText = document.getElementById('inputTextArea').value;
+    console.log('Input Text:', inputText);
 
     // Make an AJAX request to your Flask server
     fetch('/run_script', {
@@ -533,6 +568,7 @@ function runPythonScript() {
     })
     .then(response => response.json())
     .then(data => {
+        console.log('Response Data:', data);
         document.getElementById('outputTextArea').value = data.output;
         document.getElementById('downloadBtn').disabled = false;
     })
@@ -546,14 +582,15 @@ function runPythonScript() {
     });
 }
 
+
 </script>
 <script>
 document.getElementById('clearBtn').addEventListener('click', function () {
-        document.getElementById('inputTextArea').value = '';
-        // Clear Output TextArea as well
-        document.getElementById('outputTextArea').value = '';
-        // Disable the Download button after clearing
-        document.getElementById('downloadBtn').disabled = true;
+    document.getElementById('inputTextArea').value = '';
+    // Clear Output TextArea as well
+    document.getElementById('outputTextArea').value = '';
+    // Disable the Download button after clearing
+    document.getElementById('downloadBtn').disabled = true;
 
     // Re-enable the generate button after the fetch request is complete
     document.getElementById('generateBtn').disabled = false;
@@ -564,8 +601,9 @@ document.getElementById('clearBtn').addEventListener('click', function () {
 <script>
 document.getElementById('downloadBtn').addEventListener('click', function() {
     var outputText = document.getElementById('outputTextArea').value;
-    downloadFile(outputText, 'output.txt');
-  });
+	var selectedLanguage = document.getElementById('languageDropdown').value;
+    downloadFile(outputText, selectedLanguage + ".txt");
+});
 
 // File Download Function
 function downloadFile(content, fileName) {

@@ -64,7 +64,7 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{ url_for('Generate_Requirements') }}">Fine tune requirements</a>
-						<a class="collapse-item" href="{{ url_for('Generate_Requirements') }}">Convert into BDD/Gherkins</a>
+						<a class="collapse-item" href="{{ url_for('Convert_Requirements_BDD') }}">Convert into BDD/Gherkins</a>
                     </div>
                 </div>
             </li>
@@ -78,7 +78,7 @@
                 <div id="collapseUtilities1" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="Generate.html">Generate unit test cases</a>
+                        <a class="collapse-item" href="{{ url_for('Generate_UnitTestCases') }}">Generate unit test cases</a>
 						<a class="collapse-item" href="Generate.html">Find Security vulnerabilities</a>
                         <a class="collapse-item" href="{{ url_for('Code_migration') }}">Convert Code</a>
                         <a class="collapse-item" href="Generate.html">Optimize code</a>
@@ -88,7 +88,6 @@
                 </div>
             </li>
 
-Code_migration
             <!-- Nav Item - Quality enginering Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"

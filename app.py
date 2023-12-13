@@ -32,8 +32,14 @@ def Generate_TestCasesMetlifePOC():
 def Code_migration():
     return render_template('Code_migration.html')  
   
-    
-    
+@app.route('/Convert_Requirements_BDD')
+def Convert_Requirements_BDD():
+    return render_template('Convert_Requirements_BDD.html')     
+
+@app.route('/Generate_UnitTestCases')
+def Generate_UnitTestCases():
+    return render_template('Generate_UnitTestCases.html') 
+
 
 @app.route('/run_script', methods=['POST'])
 def run_script():

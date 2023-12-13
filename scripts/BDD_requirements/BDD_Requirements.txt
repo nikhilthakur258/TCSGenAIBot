@@ -1,0 +1,36 @@
+Feature: Signed-in users get larger capacity
+
+  Scenario: Upload and manage spreadsheet files
+
+    Given a user opens https://www.example.com using Chrome
+    And the user clicks on "Upload Files"
+    And the page reloads
+    And the user clicks on "Spreadsheet Formats"
+    Then the buttons "XLS" and "XLSX" show
+
+    And the user clicks on "XLSX"
+    And the user selects "500kb-sheet.xlsx"
+    Then the upload completes
+    And the table "Uploaded Files" contains a cell with "500kb-sheet.xlsx"
+
+    And the user clicks on "XLSX"
+    And the user selects "1mb-sheet.xlsx"
+    Then the upload fails
+    And the table "Uploaded Files" does not contain a cell with "1mb-sheet.xlsx"
+
+    And the user clicks on "Login"
+    And the user enters "testuser123" into the "username" field
+    And the user enters "$Pass123" into the "password" field
+    And the user clicks on "Sign in"
+    And the page reloads
+    Then the table "Uploaded Files" contains a cell with "500kb-sheet.xlsx"
+    And the table "Uploaded Files" does not contain a cell with "1mb-sheet.xlsx"
+
+    And the user clicks on "spreadsheet formats"
+    Then the buttons "XLS" and "XLSX" show
+
+    And the user clicks on "XLSX"
+    And the user selects "1mb-sheet.xlsx"
+    Then the upload completes
+    And the table "Uploaded Files" contains a cell with "1mb-sheet.xlsx"
+    And the table "Uploaded Files" contains a cell with "500kb-sheet.xlsx"
