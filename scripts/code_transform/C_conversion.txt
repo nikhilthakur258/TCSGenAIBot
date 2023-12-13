@@ -1,0 +1,25 @@
+using System;
+
+class SumCalculator
+{
+    static void Main()
+    {
+        int Counter = 1;
+        int Total = 0;
+
+        InitializeCounter(ref Counter);
+
+        while (Counter <= 10)
+        {
+            Total += Counter;
+            Counter++;
+        }
+
+        Console.WriteLine("The sum of numbers from 1 to 10 is: " + Total);
+    }
+
+    static void InitializeCounter(ref int Counter)
+    {
+        Counter = 1;
+    }
+}

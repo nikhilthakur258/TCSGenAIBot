@@ -595,7 +595,8 @@ document.getElementById('clearBtn').addEventListener('click', function () {
 <script>
 document.getElementById('downloadBtn').addEventListener('click', function() {
     var outputText = document.getElementById('outputTextArea').value;
-    downloadFile(outputText, 'output.txt');
+	var selectedLanguage = document.getElementById('languageDropdown').value;
+    downloadFile(outputText, selectedLanguage + ".txt");
 });
 
 // File Download Function

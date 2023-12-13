@@ -1,0 +1,35 @@
+# IDENTIFICATION DIVISION.
+# PROGRAM-ID. SumCalculator.
+
+# DATA DIVISION.
+# WORKING-STORAGE SECTION.
+Counter = 1
+Total = 0
+
+# PROCEDURE DIVISION.
+def initialize_counter():
+    global Counter
+    Counter = 1
+
+def main():
+    # PERFORM 100-Initialize-Counter.
+    initialize_counter()
+
+    # PERFORM UNTIL Counter > 10
+    while Counter <= 10:
+        # ADD Counter TO Total
+        Total += Counter
+        # ADD 1 TO Counter
+        Counter += 1
+
+    # DISPLAY "The sum of numbers from 1 to 10 is: " Total.
+    print(f"The sum of numbers from 1 to 10 is: {Total}.")
+
+# STOP RUN.
+
+# 100-Initialize-Counter.
+# MOVE 1 TO Counter.
+initialize_counter()
+
+# Call the main procedure
+main()

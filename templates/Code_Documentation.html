@@ -481,7 +481,20 @@
         <!-- Buttons -->
         <div class="row">
             <div class="col-md-12">
+			         <label for="languageDropdown" id="dropdownLabel"  class="mt-2">Select Framework/Programming Language</label>
+        <select id="languageDropdown" class="form-control ml-2">
+            <option value="COBOL4">COBOL4</option>
+            <option value="COBOL6">COBOL6</option>
+			<option value="COBOL85">COBOL85</option>
+			<option value="C">C#</option>
+            <option value="Java">Java</option>
+			<option value="IBM TAL">IBM TAL(Transaction Application Language)</option>
+			 <option value="PHP">PHP</option>
+			 <option value="Python">Python</option>
+			  <option value="Ruby">Ruby</option>
+			  <option value="SCOBOL">SCOBOL</option>
 			 
+        </select>
 				
 				    <div class="spinner-border text-primary" role="status" id="loadingSpinner" style="display: none;">
         <span class="sr-only">Loading...</span>
@@ -520,9 +533,47 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
 function runPythonScript() {
-	document.getElementById('loadingSpinner').style.display = 'inline-block';
-    var pythonScriptPath='AzureOpenAI_NextGenCode.py'
+    console.log('Starting runPythonScript');
+
+    document.getElementById('loadingSpinner').style.display = 'inline-block';
+    var selectedLanguage = document.getElementById('languageDropdown').value;
+    console.log('Selected Language:', selectedLanguage);
+
+    var pythonScriptPath;
+    switch (selectedLanguage) {
+        case 'COBOL6':
+            pythonScriptPath = 'AzureOpenAI_Code_Documentation_Cobol6.py';
+            break;
+        case 'Java':
+            pythonScriptPath = 'AzureOpenAI_Code_Documentation_Java.py';
+            break;
+        case 'Python':
+            pythonScriptPath = 'AzureOpenAI_Code_Documentation_Python.py';
+            break;
+	    case 'C':
+            pythonScriptPath = 'AzureOpenAI_Code_Documentation_C.py';
+            break;
+	    case 'COBOL4':
+            pythonScriptPath = 'AzureOpenAI_Code_Documentation_COBOL4.py';
+            break;
+	    case 'COBOL85':
+            pythonScriptPath = 'AzureOpenAI_Code_Documentation_COBOL85.py';
+            break;	
+	    case 'IBM TAL':
+            pythonScriptPath = 'AzureOpenAI_Code_Documentation_IBM_TAL.py';
+            break;	
+	    case 'SCOBOL':
+            pythonScriptPath = 'AzureOpenAI_Code_Documentation_SCOBOL.py';
+            break;				
+        default:
+            console.error('Unexpected language value:', selectedLanguage);
+            // Handle unexpected values or provide a default script path
+            break;
+    }
+    console.log('Python Script Path:', pythonScriptPath);
+
     var inputText = document.getElementById('inputTextArea').value;
+    console.log('Input Text:', inputText);
 
     // Make an AJAX request to your Flask server
     fetch('/run_script', {
@@ -546,6 +597,7 @@ function runPythonScript() {
 
 }
 
+
 </script>
 <script>
 document.getElementById('clearBtn').addEventListener('click', function () {
@@ -565,8 +617,9 @@ document.getElementById('clearBtn').addEventListener('click', function () {
 <script>
 document.getElementById('downloadBtn').addEventListener('click', function() {
     var outputText = document.getElementById('outputTextArea').value;
-    downloadFile(outputText, 'output.txt');
-  });
+	var selectedLanguage = document.getElementById('languageDropdown').value;
+    downloadFile(outputText, selectedLanguage + ".txt");
+});
 
 // File Download Function
 function downloadFile(content, fileName) {

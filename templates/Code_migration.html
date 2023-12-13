@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
+	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
     <meta name="author" content="">
 
     <title>GenAI Bot</title>
@@ -466,10 +468,19 @@
     font-weight: bold;
   }
 
-  #outputTextArea {
-    background-color: black;
-    color: white;
-  }
+#outputTextArea {
+    background-color: black !important;
+    color: white !important;
+}
+
+/* Add styles for highlighted elements */
+#outputTextArea pre code {
+    display: block;
+    padding: 1em;
+    overflow-x: auto;
+    background: black !important;
+    color: white !important;
+}
 </style>
 
 </head>
@@ -486,9 +497,11 @@
             <option value="COBOL4">COBOL4</option>
             <option value="COBOL6">COBOL6</option>
 			<option value="COBOL85">COBOL85</option>
-            <option value="Python">Python</option>
-			 <option value="Java">Java</option>
+			<option value="C">C#</option>
+            <option value="Java">Java</option>
 			 <option value="PHP">PHP</option>
+			 <option value="Python">Python</option>
+			  <option value="Ruby">Ruby</option>
 			 
         </select>
 
@@ -537,14 +550,20 @@ function runPythonScript() {
 
     var pythonScriptPath;
     switch (selectedLanguage) {
-        case 'robot_framework':
-            pythonScriptPath = 'AzureOpenAI_Robot.py';
+        case 'COBOL6':
+            pythonScriptPath = 'AzureOpenAI_Cobol6.py';
             break;
-        case 'java_selenium':
-            pythonScriptPath = 'AzureOpenAI_java.py';
+        case 'Java':
+            pythonScriptPath = 'AzureOpenAI_Code_Conversion_Java.py';
             break;
-        case 'python_selenium':
-            pythonScriptPath = 'AzureOpenAI_python.py';
+        case 'Python':
+            pythonScriptPath = 'AzureOpenAI_Code_Conversion_Python.py';
+            break;
+	    case 'C':
+            pythonScriptPath = 'AzureOpenAI_Code_Conversion_C.py';
+            break;
+	    case 'COBOL4':
+            pythonScriptPath = 'AzureOpenAI_Code_Conversion_COBOL4.py';
             break;
         default:
             console.error('Unexpected language value:', selectedLanguage);
@@ -567,8 +586,9 @@ function runPythonScript() {
     .then(response => response.json())
     .then(data => {
         console.log('Response Data:', data);
-        document.getElementById('outputTextArea').value = data.output;
-        document.getElementById('downloadBtn').disabled = false;
+            // Update the output text area
+            updateOutputTextArea(data.output);
+            document.getElementById('downloadBtn').disabled = false;
     })
     .catch(error => {
         console.error('Error:', error);
@@ -599,7 +619,8 @@ document.getElementById('clearBtn').addEventListener('click', function () {
 <script>
 document.getElementById('downloadBtn').addEventListener('click', function() {
     var outputText = document.getElementById('outputTextArea').value;
-    downloadFile(outputText, 'output.txt');
+	var selectedLanguage = document.getElementById('languageDropdown').value;
+    downloadFile(outputText, selectedLanguage + ".txt");
 });
 
 // File Download Function
@@ -612,6 +633,22 @@ function downloadFile(content, fileName) {
     link.click();
     document.body.removeChild(link);
 }
+</script>
+<script>
+    // Function to highlight code in the output text area
+    function highlightOutput() {
+        var outputTextArea = document.getElementById('outputTextArea');
+        hljs.highlightElement(outputTextArea);
+    }
+
+    // Modify the code that updates the outputTextArea, call highlightOutput() after the update
+    function updateOutputTextArea(transformedCode) {
+        var outputTextArea = document.getElementById('outputTextArea');
+        outputTextArea.value = transformedCode;
+
+        // Manually call the highlight function
+        highlightOutput();
+    }
 </script>
 
 </body>

@@ -1,0 +1,22 @@
+public class SumCalculator {
+    public static void main(String[] args) {
+        // WORKING-STORAGE SECTION
+        int counter = 1;
+        int total = 0;
+
+        // PROCEDURE DIVISION
+        initializeCounter();
+
+        while (counter <= 10) {
+            total += counter;
+            counter++;
+        }
+
+        System.out.println("The sum of numbers from 1 to 10 is: " + total);
+    }
+
+    // 100-Initialize-Counter
+    private static void initializeCounter() {
+        counter = 1;
+    }
+}

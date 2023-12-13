@@ -1,0 +1,19 @@
+IDENTIFICATION DIVISION.
+       PROGRAM-ID. SumCalculator.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01  Counter       PIC 9(2) VALUE 1.
+       01  Total         PIC 9(4) VALUE 0.
+
+       PROCEDURE DIVISION.
+           PERFORM 100-Initialize-Counter.
+           PERFORM UNTIL Counter > 10
+               ADD Counter TO Total
+               ADD 1 TO Counter
+           END-PERFORM.
+           DISPLAY "The sum of numbers from 1 to 10 is: " Total.
+           STOP RUN.
+
+       100-Initialize-Counter.
+           MOVE 1 TO Counter.

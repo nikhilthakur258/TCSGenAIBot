@@ -1,0 +1,86 @@
+Code Architecture and Explanation Document
+
+Introduction:
+
+This document provides a detailed explanation of the code architecture for a mainframe program written in a macro-oriented language. The program is designed to interact with a CICS (Customer Information Control System) environment, utilizing macros for various CICS operations. The primary functionality involves reading and writing employee records to a file.
+
+1. Macro Definitions:
+
+MACRO #CICS:
+
+Represents the start of a CICS transaction block.
+Used to encapsulate CICS-specific operations.
+MACRO #EOD:
+
+Stands for End-of-Data.
+Represents the point where the main program finishes processing.
+MACRO #READ:
+
+Initiates a CICS READ operation on the 'EMPLOYEE' file.
+Retrieves employee data based on the specified employee ID.
+MACRO #WRITE:
+
+Initiates a CICS WRITE operation on the 'EMPLOYEE' file.
+Writes data from the working storage area to the 'EMPLOYEE' file.
+2. Working Storage Definition:
+
+WS-WORK-AREA:
+
+Data structure representing the working storage area.
+Used for temporary storage during program execution.
+WS-EMPLOYEE-ID:
+
+Field in WS-WORK-AREA storing the employee ID.
+WS-EMPLOYEE-NAME:
+
+Field in WS-WORK-AREA storing the employee name.
+3. File Control Blocks:
+
+FILE-CTRL-BLOCK:
+
+Data structure representing the file control block.
+Used to manage file-related operations.
+FILE-EMPLOYEE:
+
+File identifier for the 'EMPLOYEE' file.
+FILE-EMPLOYEE-NAME:
+
+Field in FILE-CTRL-BLOCK storing the name of the 'EMPLOYEE' file.
+4. Main Program:
+
+USING Clause:
+
+Specifies the data areas (FILE-CTRL-BLOCK and WS-WORK-AREA) to be used by the program.
+Open File Operation:
+
+Opens the 'EMPLOYEE' file for further operations.
+Read Operation:
+
+Sets the employee ID in WS-EMPLOYEE-ID and performs a CICS READ operation.
+Retrieves employee data into WS-WORK-AREA.
+Data Manipulation:
+
+Loads employee name from WS-WORK-AREA into WS-EMPLOYEE-NAME.
+Write Operation:
+
+Performs a CICS WRITE operation to update the 'EMPLOYEE' file with modified data.
+Close File Operation:
+
+Closes the 'EMPLOYEE' file after all operations.
+End-of-Data Operation:
+
+Invokes the #EOD macro to signify the end of program execution.
+5. Macro Implementations (#READ, #WRITE, #EOD):
+
+#READ Macro:
+
+Invokes CICS READ operation on the 'EMPLOYEE' file using the specified employee ID.
+#WRITE Macro:
+
+Invokes CICS WRITE operation to update the 'EMPLOYEE' file with data from WS-WORK-AREA.
+#EOD Macro:
+
+Initiates a CICS RETURN operation, marking the end of the program.
+Conclusion:
+
+This program demonstrates a structured approach to interact with a CICS environment, using macros to encapsulate specific CICS operations. The main program orchestrates file operations and data manipulation, while the macros provide modular and reusable components for key CICS transactions.
