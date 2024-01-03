@@ -1,0 +1,40 @@
+import pandas as pd
+
+# Define the date range
+start_date = '2023-01-01'
+end_date = '2023-12-31'
+
+# Sample data
+sales_data = {
+    'PRODUCT_ID': ['P1', 'P2', 'P1', 'P2'],
+    'SALE_DATE': ['2023-01-05', '2023-01-05', '2023-01-10', '2023-01-15'],
+    'AMOUNT': [100, 150, 200, 120]
+}
+
+products_data = {
+    'PRODUCT_ID': ['P1', 'P2'],
+    'PRODUCT_NAME': ['Product A', 'Product B']
+}
+
+# Create DataFrames
+sales_df = pd.DataFrame(sales_data)
+products_df = pd.DataFrame(products_data)
+
+# Convert SALE_DATE to datetime
+sales_df['SALE_DATE'] = pd.to_datetime(sales_df['SALE_DATE'])
+
+# Filter sales data based on date range
+filtered_sales = sales_df[(sales_df['SALE_DATE'] >= start_date) & (sales_df['SALE_DATE'] <= end_date)]
+
+# Merge sales and products data
+merged_data = pd.merge(filtered_sales, products_df, on='PRODUCT_ID', how='left')
+
+# Group by PRODUCT_ID, SALE_DATE, and PRODUCT_NAME
+grouped_data = merged_data.groupby(['PRODUCT_ID', 'SALE_DATE', 'PRODUCT_NAME']).agg({'AMOUNT': 'sum'}).reset_index()
+
+# Calculate grand total
+grand_total = grouped_data['AMOUNT'].sum()
+
+# Display the result
+print("Grand Total:", grand_total)
+print(grouped_data)
