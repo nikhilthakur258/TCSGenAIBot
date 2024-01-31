@@ -47,7 +47,10 @@ def Generate_performanceTestCases():
 @app.route('/Generate_code_optimization')
 def Generate_code_optimization():
     return render_template('Generate_code_optimization.html') 
-    
+ 
+@app.route('/Generate_TestScenarios')
+def Generate_TestScenarios():
+    return render_template('Generate_TestScenarios.html')  
 
 
 @app.route('/run_script', methods=['POST'])

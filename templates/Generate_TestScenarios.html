@@ -473,7 +473,7 @@
 
 </head>
 <body>
-<h1 align=center style="font-size: 24px;">Fine-tune requirements</h1>
+<h1 align=center style="font-size: 24px;">Generate test scenarios based on requiremements </h1>
 
     <div class="container mt-5">
 
@@ -498,7 +498,7 @@
         <textarea id="inputTextArea" class="form-control" placeholder="Enter requirements..."></textarea>
     </div>
     <div class="col-md-6">
-        <label for="outputTextArea" class="mt-2"><strong>Fine tuned requirments</strong></label>
+        <label for="outputTextArea" class="mt-2"><strong>Test scenarios</strong></label>
         <textarea id="outputTextArea" class="form-control" placeholder="Output will be displayed here..." disabled></textarea>
     </div>
 </div>
@@ -506,7 +506,7 @@
         <!-- Generate Button -->
         <div class="row mt-3">
             <div class="col-md-12 text-center">
-                <button id="generateBtn" class="btn btn-primary" onclick="runPythonScript()">Fine tune requirements</button>
+                <button id="generateBtn" class="btn btn-primary" onclick="runPythonScript()">Generate Test Scenarios</button>
             </div>
         </div>
 
@@ -520,7 +520,7 @@
 function runPythonScript() {
 	document.getElementById('loadingSpinner').style.display = 'inline-block';
 
-    var pythonScriptPath = "AzureOpenAI_fine_tuned_requirements.py";
+    var pythonScriptPath = "AzureOpenAI_requirements_generateTestScenarios.py";
     var inputText = document.getElementById('inputTextArea').value;
 
     // Make an AJAX request to your Flask server
@@ -564,7 +564,7 @@ document.getElementById('clearBtn').addEventListener('click', function () {
 <script>
 document.getElementById('downloadBtn').addEventListener('click', function() {
     var outputText = document.getElementById('outputTextArea').value;
-    downloadFile(outputText, 'output.txt');
+    downloadFile(outputText, 'TestScenarios.txt');
   });
 
 // File Download Function

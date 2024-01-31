@@ -1,0 +1,59 @@
+Test Scenarios:
+Verify Basic PDF Structure:
+
+Test Steps:
+Open the generated PDF document.
+Check that the PDF orientation is portrait ("P"), units are in inches, page dimensions are 4x2 inches, title is "Package Label 4x2," and margins are left: 0.1, right: 0, top: 0.1.
+Check Barcode Content:
+
+Test Steps:
+Locate the CODE39 barcode in the PDF at coordinates (left: 0.15, top: 0.10).
+Scan the barcode and ensure it displays the formatted ID as specified in the XML (e.g., "00000001").
+Validate Barcode Font Style:
+
+Test Steps:
+Identify the barcode font style in the PDF.
+Confirm that the font style is Arial and bold.
+Check Text Field for "Tracking No":
+
+Test Steps:
+Locate the "Tracking No:" label in the PDF at coordinates (left: 0.12, top: 0.55).
+Verify the font size is 6, style is bold, and font name is Arial.
+Verify Tracking Number Data:
+
+Test Steps:
+Locate the tracking number field in the PDF at coordinates (left: 0.65, top: 0.55).
+Confirm that the displayed tracking number matches the data from the XML (e.g., "1234567890").
+Check that the font size is 6, style is bold, and font name is Arial.
+Verify Data Prefix and Format:
+
+Test Steps:
+Check that the barcode data is formatted with leading zeros and matches the specified format ("%08d").
+Test PDF Rendering:
+
+Test Steps:
+Open the PDF in Adobe Reader and another PDF viewer.
+Check for consistent rendering across different viewers without any layout or formatting issues.
+Boundary Testing:
+
+Test Steps:
+Test with the maximum allowed values for the barcode and tracking number.
+Ensure the PDF handles large values without distortion.
+Edge Cases:
+
+Test Steps:
+Test with an empty or null tracking number.
+Confirm that the PDF handles this scenario gracefully without errors.
+Compatibility Testing:
+
+Test Steps:
+Open the PDF in Adobe Reader, Foxit, and another PDF viewer.
+Check for any compatibility issues or variations in rendering.
+Regression Testing:
+
+Test Steps:
+After any modifications to the XML or PDF template, rerun all the above tests to ensure existing functionality is not impacted.
+Verify Font Size and Style for Other Elements:
+
+Test Steps:
+If there are additional text elements in the PDF, check their font size, style, and font name against the XML specifications.
