@@ -1,16 +1,2 @@
 Write code in Java selenium to test below scenario: 
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-Document : pdfengine.xml
-Created on : April 3, 2014
-Author :
-Description:
-Purpose of the document follows.
--->
-<pdfdocument orientation="P" units="in" pagewidth="4" pageheight="2" title="Package Label 4x2" marginleft="0.1" marginright="0" margintop="0.1" fontname="Arial" fontbold="" fontsize="2">
-<documentelements left="0.15" top="0.10" width="0.05" height=".5" datasourcefield="id" dataprefix="" dataformat=" %08d" type="CODE39" fontsize="2" fontbold="B" fontname="Arial" wrap=""></documentelements>
-<documentelements left="0.12" top=".55" width="1.8" height="0.2" dataprefix="" dataformat="" type="TEXT" fontsize="6" wrap="" value="Tracking No:" fontbold="B"></documentelements>
-<documentelements left="0.65" top=".55" width="2.2" height="0.2" datasourcefield="trackingno" dataprefix="" dataformat="" type="TEXT" fontsize="6" wrap="" value=""></documentelements>
-
-
-</pdfdocument>
+asdasd
