@@ -51,6 +51,11 @@ def Generate_code_optimization():
 @app.route('/Generate_TestScenarios')
 def Generate_TestScenarios():
     return render_template('Generate_TestScenarios.html')  
+    
+@app.route('/Code_To_Flowchart')
+def Code_To_Flowchart():
+    return render_template('Code_To_Flowchart.html')    
+
 
 
 @app.route('/run_script', methods=['POST'])

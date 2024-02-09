@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -79,7 +78,6 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{ url_for('Generate_UnitTestCases') }}">Generate unit test cases</a>
-						<a class="collapse-item" href="{{ url_for('Code_To_Flowchart') }}">Generate flow chart</a>
 						<a class="collapse-item" href="Generate.html">Find Security vulnerabilities</a>
                         <a class="collapse-item" href="{{ url_for('Code_migration') }}">Convert Code</a>
                         <a class="collapse-item" href="{{ url_for('Generate_code_optimization')}}">Optimize code</a>
@@ -406,21 +404,177 @@
      
 
                         <!-- Content Column -->
-                        <div class="col-lg-6 mb-4">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GenAI Bot Generate Code</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+ <style>
+  /* Set a fixed height for both text areas */
+  #inputTextArea,
+  #outputTextArea {
+    height: 300px; /* Adjust the height as needed */
+    width: 100%;
+    resize: none; /* Disable textarea resizing */
+    margin: 0; /* Remove default margin */
+    outline: none; /* Remove outline on focus */
+  }
 
-                            <!-- Project Card Example -->
-                  
-									<br>
-									<video width="1200" height="700" controls autoplay>
-        <source src="{{url_for('static', filename='Demo.mp4')}}" type="video/mp4">
-    </video>
+  /* Container styling */
+  .container {
+    padding: 20px;
+    background-color: #f8f9fa; /* Bootstrap background color */
+    border-radius: 10px; /* Border radius for container */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for container */
+    position: relative;
+  }
+
+  /* Additional styling for buttons */
+  #clearBtn,
+  #generateBtn,
+  #downloadBtn {
+    margin-top: 20px;
+  }
+
+  /* Adjust the position of the top-left and top-right buttons */
+  #clearBtn {
+    float: left;
+  }
+
+  #downloadBtn {
+    float: right;
+  }
+
+  /* Add media query for responsiveness */
+  @media (max-width: 767.98px) {
+    #clearBtn,
+    #downloadBtn {
+      float: none;
+      margin-top: 10px;
+    }
+  }
+  #languageDropdown {
+    width: 50%;
+  }
+
+  #dropdownLabel {
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+    font-weight: bold;
+  }
+
+  #outputTextArea {
+    background-color: black;
+    color: white;
+  }
+</style>
+
+</head>
+<body>
+    <h1 align="center" style="font-size: 24px;">Generate flow charts from code</h1>
+
+    <div class="container mt-5">
+        <!-- Buttons -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="spinner-border text-primary" role="status" id="loadingSpinner" style="display: none;">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <button id="clearBtn" class="btn btn-warning">Clear Input</button>
+                <button id="downloadBtn" class="btn btn-success ml-2" disabled>Download</button>
+            </div>
+        </div>
+
+        <!-- Text Areas -->
+        <div class="row">
+            <div class="col-md-6">
+                <label for="inputTextArea" class="mt-2"><strong>Enter code Here</strong></label>
+                <textarea id="inputTextArea" class="form-control" placeholder="Paste code here..."></textarea>
+            </div>
+            <div class="col-md-6">
+                <label for="outputTextArea" class="mt-2"><strong>Flow chart</strong></label>
+                <!-- Use an <object> element to embed the SVG content -->
+                <object id="outputArea" type="image/svg+xml" data="" class="output-area" width="100%" height="400"></object>
+            </div>
+        </div>
+
+        <!-- Generate Button -->
+        <div class="row mt-3">
+            <div class="col-md-12 text-center">
+                <button id="generateBtn" class="btn btn-primary" onclick="runPythonScript()">Generate Flow Chart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+ <script>
+    function runPythonScript() {
+        document.getElementById('loadingSpinner').style.display = 'inline-block';
+
+        var pythonScriptPath = "mermaid.py";
+        var inputText = document.getElementById('inputTextArea').value;
+
+        // Make an AJAX request to your Flask server
+        fetch('/run_script', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ scriptPath: pythonScriptPath, inputText: inputText }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Received data from server:', data);
+
+            // Assuming data is a valid SVG content, set it to the output area
+            document.getElementById('outputArea').data = 'data:image/svg+xml,' + encodeURIComponent(data.output);
+            document.getElementById('downloadBtn').disabled = false;
+            document.getElementById('downloadBtn').addEventListener('click', function() {
+                downloadFile(data.output, 'output.svg');
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        })
+        .finally(() => {
+            console.log('Request completed');
+            // Hide loading spinner after response
+            document.getElementById('loadingSpinner').style.display = 'none';
+        });
+    }
+
+    function downloadFile(content, fileName) {
+        var blob = new Blob([content], { type: 'image/svg+xml' });
+        var link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    document.getElementById('clearBtn').addEventListener('click', function () {
+        document.getElementById('inputTextArea').value = '';
+        // Clear Output Area as well
+        document.getElementById('outputArea').data = '';
+        // Disable the Download button after clearing
+        document.getElementById('downloadBtn').disabled = true;
+
+        // Re-enable the generate button after the fetch request is complete
+        document.getElementById('generateBtn').disabled = false;
+    });
+
+</script>
+
+</body>
 
 
-                           
-               
-
-
-                    </div>
 
                 </div>
                 <!-- /.container-fluid -->

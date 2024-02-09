@@ -1,0 +1,45 @@
+flowchart TD
+
+    subgraph Compare_JSON
+        A[Check Command Line Arguments]
+        B[Read JSON Files]
+        C[Flatten JSON Structures]
+        D[Initialize Comparison Report]
+        E[Compare Values]
+        F[Generate HTML Report]
+    end
+
+    A -->|Valid Arguments| B
+    A -->|Invalid Arguments| Z[Print Usage and Exit]
+
+    B --> C
+    C --> D
+
+    D -->|Existing Report| G[Locate End of Table]
+    D -->|New Report| H[Create Initial Structure]
+
+    G --> H
+
+    C -->|Get Unique Keys| I[Loop Over Keys]
+
+    I -->|Key Exists?| J[Compare Values]
+    J -->|Values Equal| K[Status: Same]
+    J -->|Values Different| L[Status: Different]
+    J -->|Value Missing| M[Status: Not found]
+
+    K -->|Append Row| N[Increment Record Count]
+    L -->|Append Row| N
+    M -->|Append Row| N
+
+    N --> I
+
+    H -->|Append Rows| O[Append JavaScript for Filtering]
+
+    O -->|Save Report| P[Print Success Message]
+
+    subgraph JavaScript_Functions
+        Q
+        R
+    end
+
+    P -->|Success| Z
