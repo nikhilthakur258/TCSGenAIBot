@@ -1,13 +1,14 @@
 from flask import Flask, render_template, request, jsonify
 import subprocess
 import os
+import getpass
 
 app = Flask(__name__)
 
-def save_user_ip_to_file(ip_address,prompt):
+def save_user_ip_to_file(username,ip_address,prompt):
     try:
         with open('user_ips.txt', 'a') as file:
-            file.write(f"{ip_address}|{prompt}\n")
+            file.write(f"Username: {username}|{ip_address}|{prompt}\n")
         print("User IP address saved to 'user_ips.txt' successfully.")
     except Exception as e:
         print(f"Error saving user IP address: {str(e)}")
@@ -74,8 +75,9 @@ def run_script():
         script_path = os.path.join('scripts', data['scriptPath'])  # Adjust the path
         input_text = data['inputText']
         user_ip = request.remote_addr
+        windows_username = getpass.getuser()
         # Save the user's IP address to a file
-        save_user_ip_to_file(user_ip,input_text)
+        save_user_ip_to_file(windows_username,user_ip,input_text)
         # Run the Python script using subprocess
         result = subprocess.check_output(['python', script_path, input_text], text=True)
 
