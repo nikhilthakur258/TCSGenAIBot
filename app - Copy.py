@@ -4,14 +4,6 @@ import os
 
 app = Flask(__name__)
 
-def save_user_ip_to_file(ip_address,prompt):
-    try:
-        with open('user_ips.txt', 'a') as file:
-            file.write(f"{ip_address}|{prompt}\n")
-        print("User IP address saved to 'user_ips.txt' successfully.")
-    except Exception as e:
-        print(f"Error saving user IP address: {str(e)}")
-        
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -69,13 +61,10 @@ def Code_To_Flowchart():
 @app.route('/run_script', methods=['POST'])
 def run_script():
     try:
-
         data = request.get_json()
         script_path = os.path.join('scripts', data['scriptPath'])  # Adjust the path
         input_text = data['inputText']
-        user_ip = request.remote_addr
-        # Save the user's IP address to a file
-        save_user_ip_to_file(user_ip,input_text)
+
         # Run the Python script using subprocess
         result = subprocess.check_output(['python', script_path, input_text], text=True)
 

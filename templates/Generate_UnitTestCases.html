@@ -533,7 +533,6 @@ function runPythonScript() {
     document.getElementById('loadingSpinner').style.display = 'inline-block';
     var selectedLanguage = document.getElementById('languageDropdown').value;
     console.log('Selected Language:', selectedLanguage);
-
     var pythonScriptPath;
     switch (selectedLanguage) {
         case 'java_junit':
@@ -547,7 +546,7 @@ function runPythonScript() {
             break;
         case 'c_nunit':
             pythonScriptPath = 'AzureOpenAI_unittests_c_nunit.py';
-            break;			
+            break;
         default:
             console.error('Unexpected language value:', selectedLanguage);
             // Handle unexpected values or provide a default script path
@@ -557,6 +556,7 @@ function runPythonScript() {
 
     var inputText = document.getElementById('inputTextArea').value;
     console.log('Input Text:', inputText);
+
 
     // Make an AJAX request to your Flask server
     fetch('/run_script', {
@@ -615,6 +615,8 @@ function downloadFile(content, fileName) {
     link.click();
     document.body.removeChild(link);
 }
+
+
 </script>
 
 </body>

@@ -518,11 +518,15 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
 function runPythonScript() {
-	document.getElementById('loadingSpinner').style.display = 'inline-block';
+	
 
     var pythonScriptPath = "AzureOpenAI_requirements_BDD.py";
     var inputText = document.getElementById('inputTextArea').value;
-
+	    if (inputText === '') {
+        window.alert('Please enter input before generating requirements.');
+        return; // Exit the function if no input is provided
+    }
+    document.getElementById('loadingSpinner').style.display = 'inline-block';
     // Make an AJAX request to your Flask server
     fetch('/run_script', {
         method: 'POST',
