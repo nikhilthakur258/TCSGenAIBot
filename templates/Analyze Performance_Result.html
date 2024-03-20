@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -455,7 +454,6 @@
       margin-top: 10px;
     }
   }
-
   #languageDropdown {
     width: 50%;
   }
@@ -475,151 +473,165 @@
 
 </head>
 <body>
-
-<h1 align=center style="font-size: 24px;">Generate Unit Test cases</h1>
+    <h1 align=center style="font-size: 24px;">Transform requirements into BDD/Gherkins </h1>
 
     <div class="container mt-5">
 
         <!-- Buttons -->
-<div class="row">
-    <div class="col-md-12">
-        <label for="languageDropdown" id="dropdownLabel"  class="mt-2">Select Framework/Programming Language</label>
-        <select id="languageDropdown" class="form-control ml-2">
-            <option value="java_junit">Java JUnit</option>
-			<option value="java_testNG">Java testNG</option>
-            <option value="python_pytest">Python Pytest</option>
-            <option value="c_nunit">C# NUnit</option>
-			<option value="javascript_mocha">Java script Mocha</option>
-			<option value="javascript_jasmine">Java script Jasmine</option>
-        </select>
-
-        <div class="spinner-border text-primary" role="status" id="loadingSpinner" style="display: none;">
-            <span class="sr-only">Loading...</span>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="spinner-border text-primary" role="status" id="loadingSpinner" style="display: none;">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
         </div>
 
-        <button id="clearBtn" class="btn btn-warning">Clear Input</button>
-        <button id="downloadBtn" class="btn btn-success ml-2" disabled>Download</button>
-    </div>
-</div>
+        <!-- Clear Input and Upload File Buttons -->
+        <div class="row">
+            <div class="col-md-12">
+                <button id="clearBtn" class="btn btn-warning mb-2">Clear Input</button>
+            </div>
+            <div class="col-md-12">
+                <button id="uploadBtn" class="btn btn-primary mb-2">Upload File</button>
+            </div>
+        </div>
 
         <!-- Text Areas -->
-<!-- Text Areas -->
-<div class="row">
-    <div class="col-md-6">
-        <label for="inputTextArea" class="mt-2"><strong>Enter Requirements Here</strong></label>
-        <textarea id="inputTextArea" class="form-control" placeholder="Enter requirements..."></textarea>
-    </div>
-    <div class="col-md-6">
-        <label for="outputTextArea" class="mt-2"><strong>Unit Test Cases</strong></label>
-        <textarea id="outputTextArea" class="form-control" placeholder="Output will be displayed here..." disabled></textarea>
-    </div>
-</div>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="inputTextArea" class="mt-2"><strong>Enter Requirements Here</strong></label>
+                <textarea id="inputTextArea" class="form-control" placeholder="Enter requirements..."></textarea>
+            </div>
+            <div class="col-md-6">
+                <label for="outputTextArea" class="mt-2"><strong>Requirements in BDD/Gherkins format</strong></label>
+                <textarea id="outputTextArea" class="form-control" placeholder="Output will be displayed here..." disabled></textarea>
+            </div>
+        </div>
 
         <!-- Generate Button -->
         <div class="row mt-3">
             <div class="col-md-12 text-center">
-                <button id="generateBtn" class="btn btn-primary" onclick="runPythonScript()">Generate</button>
+                <button id="generateBtn" class="btn btn-primary">Fine tune requirements</button>
             </div>
         </div>
 
     </div>
 
-<!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.4/mammoth.browser.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.4/mammoth.browser.min.js"></script>
+
+<!-- Include xlsx.js for Excel documents -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
+
+<!-- Include pdf.js for PDF documents -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+
+    <!-- JavaScript for File Upload -->
+<!-- JavaScript for File Upload -->
+<!-- JavaScript for File Upload -->
 <script>
-function runPythonScript() {
-    console.log('Starting runPythonScript');
-
-    document.getElementById('loadingSpinner').style.display = 'inline-block';
-    var selectedLanguage = document.getElementById('languageDropdown').value;
-    console.log('Selected Language:', selectedLanguage);
-    var pythonScriptPath;
-    switch (selectedLanguage) {
-        case 'java_junit':
-            pythonScriptPath = 'AzureOpenAI_unittests_java_junit.py';
-            break;
-        case 'java_testNG':
-            pythonScriptPath = 'AzureOpenAI_unittests_java_testNG.py';
-            break;
-        case 'python_pytest':
-            pythonScriptPath = 'AzureOpenAI_unittests_python_pytest.py';
-            break;
-        case 'c_nunit':
-            pythonScriptPath = 'AzureOpenAI_unittests_c_nunit.py';
-            break;
-        default:
-            console.error('Unexpected language value:', selectedLanguage);
-            // Handle unexpected values or provide a default script path
-            break;
-    }
-    console.log('Python Script Path:', pythonScriptPath);
-
-    var inputText = document.getElementById('inputTextArea').value;
-    console.log('Input Text:', inputText);
-
-
-    // Make an AJAX request to your Flask server
-    fetch('/run_script', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ scriptPath: pythonScriptPath, inputText: inputText }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Response Data:', data);
-        document.getElementById('outputTextArea').value = data.output;
-        document.getElementById('downloadBtn').disabled = false;
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    })
-    .finally(() => {
-        console.log('Request completed');
-        // Hide loading spinner after response
-        document.getElementById('loadingSpinner').style.display = 'none';
+    // Function to handle file upload event
+    document.getElementById('uploadBtn').addEventListener('click', function () {
+        var fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.onchange = function (event) {
+            var file = event.target.files[0];
+            if (file) {
+                var fileType = file.name.split('.').pop().toLowerCase(); // Define fileType here
+                var reader = new FileReader();
+                reader.onload = function () {
+                    if (fileType === 'docx') {
+                        // Use Mammoth to convert Word document to plain text
+                        mammoth.extractRawText({ arrayBuffer: reader.result })
+                            .then(function (result) {
+                                document.getElementById('inputTextArea').value = result.value;
+                            })
+                            .catch(function (err) {
+                                console.error('Error extracting text from Word document:', err);
+                            });
+                    } else if (fileType === 'xlsx') {
+                        // Use xlsx library to read Excel file and extract content
+                        var workbook = XLSX.read(reader.result, { type: 'array' });
+                        var firstSheetName = workbook.SheetNames[0];
+                        var worksheet = workbook.Sheets[firstSheetName];
+                        var excelContent = XLSX.utils.sheet_to_csv(worksheet);
+                        document.getElementById('inputTextArea').value = excelContent;
+                    } else if (fileType === 'csv') {
+                        // Read CSV file as plain text
+                        document.getElementById('inputTextArea').value = reader.result;
+                    } else if (fileType === 'pdf') {
+                        // Use pdf.js to extract text content from PDF file
+                        var loadingTask = pdfjsLib.getDocument({ data: reader.result });
+                        loadingTask.promise.then(function (pdfDocument) {
+                            pdfDocument.getPage(1).then(function (page) {
+                                page.getTextContent().then(function (textContent) {
+                                    var pdfContent = textContent.items.map(function (item) {
+                                        return item.str;
+                                    }).join('\n');
+                                    document.getElementById('inputTextArea').value = pdfContent;
+                                });
+                            });
+                        }).catch(function (err) {
+                            console.error('Error extracting text from PDF document:', err);
+                        });
+                    } else {
+                        // Unsupported file type: display as plain text
+                        document.getElementById('inputTextArea').value = reader.result;
+                        console.warn('Unsupported file type:', fileType);
+                    }
+                };
+                if (fileType === 'csv' || fileType === 'txt') {
+                    reader.readAsText(file); // Read CSV and TXT files as text
+                } else {
+                    reader.readAsArrayBuffer(file); // Read other file types
+                }
+            }
+        };
+        fileInput.click();
     });
-}
-
-
-</script>
-<script>
-document.getElementById('clearBtn').addEventListener('click', function () {
-    document.getElementById('inputTextArea').value = '';
-    // Clear Output TextArea as well
-    document.getElementById('outputTextArea').value = '';
-    // Disable the Download button after clearing
-    document.getElementById('downloadBtn').disabled = true;
-
-    // Re-enable the generate button after the fetch request is complete
-    document.getElementById('generateBtn').disabled = false;
-});
 </script>
 
-<!-- Download Button -->
-<script>
-document.getElementById('downloadBtn').addEventListener('click', function() {
-    var outputText = document.getElementById('outputTextArea').value;
-	var selectedLanguage = document.getElementById('languageDropdown').value;
-    downloadFile(outputText, selectedLanguage + ".txt");
-});
-
-// File Download Function
-function downloadFile(content, fileName) {
-    var blob = new Blob([content], { type: 'text/plain' });
-    var link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
 
 
-</script>
+    <!-- JavaScript for Clear Button -->
+    <script>
+        document.getElementById('clearBtn').addEventListener('click', function () {
+            document.getElementById('inputTextArea').value = '';
+            document.getElementById('outputTextArea').value = '';
+            document.getElementById('downloadBtn').disabled = true;
+            document.getElementById('generateBtn').disabled = false;
+        });
+    </script>
+
+    <!-- JavaScript for Generate Button -->
+    <script>
+        document.getElementById('generateBtn').addEventListener('click', function () {
+            // Add your code to generate BDD/Gherkin format
+            // This code will be triggered when the "Fine tune requirements" button is clicked
+        });
+    </script>
+
+    <!-- JavaScript for Download Button -->
+    <script>
+        document.getElementById('downloadBtn').addEventListener('click', function () {
+            var outputText = document.getElementById('outputTextArea').value;
+            downloadFile(outputText, 'output.txt');
+        });
+
+        function downloadFile(content, fileName) {
+            var blob = new Blob([content], { type: 'text/plain' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
 
 </body>
 
